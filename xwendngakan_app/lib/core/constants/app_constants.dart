@@ -2,9 +2,10 @@ class AppConstants {
   AppConstants._();
 
   // === API ===
-  static const String baseUrl = 'http://192.168.7.164:8001/api';
+  static const String baseUrl = 'http://khwenden.com/api';
+  // static const String baseUrl = 'http://khwenden.com/public/api'; // Try this if /api 404s
+  // For Local: 'http://192.168.7.164:8001/api'
   // For Android Emulator: 'http://10.0.2.2:8001/api'
-  // Production: 'https://your-domain.com/api'
 
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 30);
