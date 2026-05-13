@@ -43,6 +43,13 @@ class ProfileScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     _SettingsGroup(isDark: isDark, children: [
                       _NavTile(
+                        icon: Icons.bookmark_rounded,
+                        iconBg: const Color(0xFF4A90D9),
+                        label: l.saved,
+                        onTap: () => context.push('/saved'),
+                      ),
+                      _Divider(isDark: isDark),
+                      _NavTile(
                         icon: Icons.notifications_rounded,
                         iconBg: const Color(0xFFE05C8A),
                         label: l.notifications,

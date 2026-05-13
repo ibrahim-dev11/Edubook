@@ -13,23 +13,23 @@ class MainShell extends StatelessWidget {
   const MainShell({super.key, required this.child});
 
   int _locationToIndex(String location) {
-    if (location.startsWith('/news')) return 1;
-    if (location.startsWith('/teachers')) return 2;
+    if (location.startsWith('/news')) return 0;
+    if (location.startsWith('/teachers')) return 1;
     if (location.startsWith('/cvs')) return 3;
     if (location.startsWith('/profile')) return 4;
-    return 0;
+    return 2; // home is default center
   }
 
   void _onTap(BuildContext context, int index) {
     switch (index) {
       case 0:
-        context.go('/home');
-        break;
-      case 1:
         context.go('/news');
         break;
-      case 2:
+      case 1:
         context.go('/teachers');
+        break;
+      case 2:
+        context.go('/home');
         break;
       case 3:
         context.go('/cvs');
@@ -49,10 +49,6 @@ class MainShell extends StatelessWidget {
 
     final items = [
       _NavItem(
-          icon: Icons.home_outlined,
-          activeIcon: Icons.home_rounded,
-          label: l.home),
-      _NavItem(
           icon: Icons.article_outlined,
           activeIcon: Icons.article_rounded,
           label: l.news),
@@ -60,6 +56,11 @@ class MainShell extends StatelessWidget {
           icon: Icons.school_outlined,
           activeIcon: Icons.school_rounded,
           label: l.teachers),
+      _NavItem(
+          icon: Icons.home_outlined,
+          activeIcon: Icons.home_rounded,
+          label: l.home,
+          isMain: true),
       _NavItem(
           icon: Icons.work_outline_rounded,
           activeIcon: Icons.work_rounded,
@@ -117,13 +118,40 @@ class MainShell extends StatelessWidget {
                 children: List.generate(items.length, (i) {
                   final item = items[i];
                   final isActive = currentIndex == i;
+
+                  if (item.isMain) {
+                    return GestureDetector(
+                      onTap: () => _onTap(context, i),
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.35),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          isActive ? item.activeIcon : item.icon,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                    );
+                  }
+
                   return GestureDetector(
                     onTap: () => _onTap(context, i),
                     behavior: HitTestBehavior.opaque,
                     child: AnimatedContainer(
                       duration: AppConstants.fast,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                          horizontal: 10, vertical: 8),
                       decoration: BoxDecoration(
                         color: isActive
                             ? AppColors.primary.withOpacity(0.15)
@@ -143,14 +171,18 @@ class MainShell extends StatelessWidget {
                             size: 24,
                           ),
                           if (isActive) ...[
-                            const SizedBox(width: 8),
-                            Text(
-                              item.label,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.primary,
-                                fontFamily: 'Rabar',
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                item.label,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primary,
+                                  fontFamily: 'Rabar',
+                                ),
                               ),
                             ),
                           ],
@@ -173,9 +205,11 @@ class _NavItem {
   final IconData icon;
   final IconData activeIcon;
   final String label;
+  final bool isMain;
   const _NavItem({
     required this.icon,
     required this.activeIcon,
     required this.label,
+    this.isMain = false,
   });
 }

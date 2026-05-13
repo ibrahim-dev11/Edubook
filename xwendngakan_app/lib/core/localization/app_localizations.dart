@@ -45,7 +45,7 @@ class AppLocalizations {
   String get submit => _t({'ku': 'ناردن', 'kbd': 'فرێکرن', 'ar': 'إرسال', 'en': 'Submit', 'tr': 'Gönder'});
   String get required => _t({'ku': 'پێویستە', 'kbd': 'یا پێدڤی', 'ar': 'مطلوب', 'en': 'Required', 'tr': 'Gerekli'});
   String get invalidEmail => _t({'ku': 'ئیمەیڵی نادروستە', 'kbd': 'ئیمەیڵێ نەدرۆست', 'ar': 'بريد إلكتروني غير صالح', 'en': 'Invalid email address', 'tr': 'Geçersiz e-posta'});
-  String get passwordMinLength => _t({'ku': 'وشەی نهێنی دەبێت لانیکەم ٦ پیت بێت', 'kbd': 'پەیڤا نهێنی دڤێت کێمترین ٦ پیت بن', 'ar': 'كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'en': 'Password must be at least 6 characters', 'tr': 'Şifre en az 6 karakter olmalı'});
+  String get passwordMinLength => _t({'ku': 'وشەی نهێنی دەبێت لانیکەم ٨ پیت بێت', 'kbd': 'پەیڤا نهێنی دڤێت کێمترین ٨ پیت بن', 'ar': 'كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'en': 'Password must be at least 8 characters', 'tr': 'Şifre en az 8 karakter olmalı'});
   String get passwordsDoNotMatch => _t({'ku': 'وشەی نهێنییەکان جیاوازن', 'kbd': 'پەیڤێن نهێنی وەک ئێک نینن', 'ar': 'كلمتا المرور غير متطابقتين', 'en': 'Passwords do not match', 'tr': 'Şifreler eşleşmiyor'});
   String get registerFailed => _t({'ku': 'تۆمارکردن سەرکەوتوو نەبوو', 'kbd': 'تۆمارکرن سەرکەفتی نەبوو', 'ar': 'فشل التسجيل', 'en': 'Registration failed', 'tr': 'Kayıt başarısız'});
   String get optional => _t({'ku': 'ئارەزووی', 'kbd': 'ئارەزوومەندانە', 'ar': 'اختياري', 'en': 'Optional', 'tr': 'İsteğe bağlı'});
@@ -200,7 +200,7 @@ class AppLocalizations {
   String get security => _t({'ku': 'ئەمنیەت', 'kbd': 'ئەمنیەت', 'ar': 'الأمان', 'en': 'Security', 'tr': 'Güvenlik'});
   String get help => _t({'ku': 'یارمەتی', 'kbd': 'هاریکاری', 'ar': 'المساعدة', 'en': 'Help', 'tr': 'Yardım'});
   String get about2 => _t({'ku': 'دەربارەی ئەپ', 'kbd': 'دەربارەی ئەپی', 'ar': 'حول التطبيق', 'en': 'About App', 'tr': 'Uygulama Hakkında'});
-  String get savedItems => _t({'ku': 'گیراوەکان', 'kbd': 'پاراستی', 'ar': 'المحفوظات', 'en': 'Saved Items', 'tr': 'Kaydedilenler'});
+  String get savedItems => _t({'ku': 'دڵخوازەکان', 'kbd': 'پاراستی', 'ar': 'المفضلة', 'en': 'Favorites', 'tr': 'Favoriler'});
   String get version => _t({'ku': 'وەشان', 'kbd': 'وەشان', 'ar': 'الإصدار', 'en': 'Version', 'tr': 'Sürüm'});
   String get logoutConfirm => _t({'ku': 'دڵنیایت لە چوونەدەرەوە؟', 'kbd': 'تۆ یێ پشت راستی دڤێی دەرکەڤی؟', 'ar': 'هل أنت متأكد من تسجيل الخروج؟', 'en': 'Are you sure you want to logout?', 'tr': 'Çıkış yapmak istediğinden emin misin?'});
   String get notificationSettings => _t({'ku': 'ڕێکخستنی ئاگادارکردنەوەکان', 'kbd': 'رێکخستنا ئاگەدارییان', 'ar': 'إعدادات الإشعارات', 'en': 'Notification Settings', 'tr': 'Bildirim Ayarları'});
@@ -212,10 +212,10 @@ class AppLocalizations {
   String get noResults => _t({'ku': 'ئەنجام نییە', 'kbd': 'چ ئەنجام نینن', 'ar': 'لا توجد نتائج', 'en': 'No results found', 'tr': 'Sonuç bulunamadı'});
   String get years => _t({'ku': 'ساڵ', 'kbd': 'ساڵ', 'ar': 'سنة', 'en': 'Years', 'tr': 'Yıl'});
   String get loginToSeeNotifications => _t({'ku': 'داخڵ بوو بۆ بینینی ئاگادارکردنەوەکان', 'kbd': 'ژ بۆ دیتنا ئاگەدارییان بچووە ژوور', 'ar': 'سجل دخول لرؤية الإشعارات', 'en': 'Login to see notifications', 'tr': 'Bildirimleri görmek için giriş yap'});
-  String get savedInstitutions => _t({'ku': 'خوێندنگاکانی گیراو', 'kbd': 'خویندنگەهێن پاراستی', 'ar': 'المؤسسات المحفوظة', 'en': 'Saved Institutions', 'tr': 'Kaydedilen Kurumlar'});
+  String get savedInstitutions => _t({'ku': 'خوێندنگاکانی دڵخواز', 'kbd': 'خویندنگەهێن پاراستی', 'ar': 'المؤسسات المفضلة', 'en': 'Favorite Institutions', 'tr': 'Favori Kurumlar'});
   String get noFavorites => _t({'ku': 'هیچ خوێندنگێکت گیراو نییە', 'kbd': 'تە چ خویندنگەهـ نەپاراستینە', 'ar': 'لم تحفظ أي مؤسسة بعد', 'en': 'No saved institutions yet', 'tr': 'Henüz kaydedilen kurum yok'});
   String get browseInstitutions => _t({'ku': 'خوێندنگاکان ببینە', 'kbd': 'ل خویندنگەهان بگەرە', 'ar': 'تصفح المؤسسات', 'en': 'Browse Institutions', 'tr': 'Kurumları Gezin'});
-  String get saved => _t({'ku': 'گیراوەکان', 'kbd': 'پاراستی', 'ar': 'المحفوظات', 'en': 'Saved', 'tr': 'Kaydedilenler'});
+  String get saved => _t({'ku': 'دڵخوازەکان', 'kbd': 'پاراستی', 'ar': 'المفضلة', 'en': 'Favorites', 'tr': 'Favoriler'});
   String get guest => _t({'ku': 'میوان', 'kbd': 'مێڤان', 'ar': 'ضيف', 'en': 'Guest', 'tr': 'Misafir'});
   String get teacherRegisterSuccess => _t({'ku': 'داواکاریت بە سەرکەوتوویی نێردرا، بچاوە ڕاگەیەنراوەکانت', 'kbd': 'داخوازییا تە ب سەرکەفتی هاتە شاندن، ل هیڤییا بەرسڤێ بە', 'ar': 'تم إرسال طلبك بنجاح، انتظر الموافقة', 'en': 'Your request was submitted. Await approval.', 'tr': 'Talebiniz gönderildi. Onay bekleyin.'});
   String get cvSubmitSuccess => _t({'ku': 'CV ت بە سەرکەوتوویی نێردرا', 'kbd': 'CVیا تە ب سەرکەفتی هاتە شاندن', 'ar': 'تم رفع سيرتك الذاتية بنجاح', 'en': 'Your CV was submitted successfully', 'tr': 'CV\'niz başarıyla gönderildi'});

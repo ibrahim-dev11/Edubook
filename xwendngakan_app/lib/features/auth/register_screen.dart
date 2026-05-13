@@ -113,6 +113,8 @@ class _RegisterScreenState extends State<RegisterScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final size = MediaQuery.of(context).size;
 
+    const errorColor = Color(0xFFE57373);
+
     InputDecoration inputDeco(String label, IconData icon, {String? hint}) {
       return InputDecoration(
         labelText: label,
@@ -126,6 +128,12 @@ class _RegisterScreenState extends State<RegisterScreen>
           color: isDark ? Colors.white60 : Colors.black54,
           fontSize: 14,
           fontFamily: 'Rabar',
+        ),
+        errorStyle: const TextStyle(
+          color: errorColor,
+          fontSize: 12,
+          fontFamily: 'Rabar',
+          fontWeight: FontWeight.w500,
         ),
         prefixIcon: Icon(icon, color: isDark ? Colors.white54 : Colors.black54, size: 22),
         filled: true,
@@ -141,6 +149,14 @@ class _RegisterScreenState extends State<RegisterScreen>
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: errorColor, width: 1.2),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(color: errorColor, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
       );
@@ -289,8 +305,9 @@ class _RegisterScreenState extends State<RegisterScreen>
                             style: TextStyle(color: isDark ? Colors.white : Colors.black87),
                             decoration: inputDeco(l.email, Icons.email_outlined, hint: 'example@gmail.com'),
                             validator: (v) {
-                              if (v == null || v.isEmpty) return l.required;
-                              if (!v.contains('@')) return l.invalidEmail;
+                              if (v == null || v.trim().isEmpty) return l.required;
+                              final emailRegex = RegExp(r'^[\w.+\-]+@[a-zA-Z\d\-]+\.[a-zA-Z]{2,}$');
+                              if (!emailRegex.hasMatch(v.trim())) return l.invalidEmail;
                               return null;
                             },
                           ),
@@ -309,7 +326,11 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 onPressed: () => setState(() => _obscure = !_obscure),
                               ),
                             ),
-                            validator: (v) => (v == null || v.length < 6) ? l.passwordMinLength : null,
+                            validator: (v) {
+                              if (v == null || v.isEmpty) return l.required;
+                              if (v.length < 8) return l.passwordMinLength;
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
@@ -378,7 +399,7 @@ class _RegisterScreenState extends State<RegisterScreen>
           // Back button overlay
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(left: 24, top: 12),
+              padding: const EdgeInsets.all(16.0),
               child: GestureDetector(
                 onTap: () => context.canPop() ? context.pop() : context.go('/login'),
                 child: Container(
