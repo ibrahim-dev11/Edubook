@@ -2,7 +2,7 @@ class AppConstants {
   AppConstants._();
 
   // === API ===
-  static const String baseUrl = 'http://khwenden.com/api';
+  static const String baseUrl = 'https://khwenden.com/api';
   // static const String baseUrl = 'http://khwenden.com/public/api'; // Try this if /api 404s
   // For Local: 'http://192.168.7.164:8001/api'
   // For Android Emulator: 'http://10.0.2.2:8001/api'

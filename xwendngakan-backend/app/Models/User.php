@@ -10,8 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
@@ -97,5 +99,14 @@ class User extends Authenticatable
     public function institution(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Institution::class);
+    }
+
+    /**
+     * Determine if the user can access the Filament admin panel.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // For testing, allow if they are admin or email is admin@example.com
+        return $this->is_admin || $this->email === 'admin@example.com';
     }
 }
