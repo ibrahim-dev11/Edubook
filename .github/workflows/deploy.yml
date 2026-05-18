@@ -3,7 +3,7 @@ name: Deploy Laravel to Server
 on:
   push:
     branches:
-      - main # ئەگەر ناوی برانچی سەرەکیت  ئەوا ئەمە بگۆڕە بۆ master
+      - main
 
 jobs:
   deploy:
@@ -11,41 +11,62 @@ jobs:
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
+          envs: GITHUB_TOKEN
           script: |
             set -e
 
-            # تێبینی: ئەو بەشەی خوارەوە کە نووسراوە cd، پێویستە بیگۆڕیت بۆ شوێنی باکێندەکەت لە سێرڤەرەکە
-            cd /www/wwwroot/khwenden.com/rebary_xwendn
+            REPO_CACHE="/www/wwwroot/khwenden.com/.rebary_repo_cache"
+            DEPLOY_DIR="/www/wwwroot/khwenden.com/rebary_xwendn"
+            REPO_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/ibrahim-dev11/Edubook.git"
 
-            # هێنانی کۆدە نوێیەکان
-            git pull origin main
+            # Clone repo if not already cached, otherwise pull latest
+            if [ ! -d "$REPO_CACHE/.git" ]; then
+              echo "--- کلۆنکردنی ریپۆزتۆری بۆ cache ---"
+              git clone "$REPO_URL" "$REPO_CACHE"
+            else
+              echo "--- هێنانی کۆدە نوێیەکان ---"
+              cd "$REPO_CACHE"
+              git remote set-url origin "$REPO_URL"
+              git fetch origin
+              git reset --hard origin/main
+            fi
 
-            # دابەزاندنی پاکەیجە نوێیەکان
+            # Sync only the backend subdirectory to the web root
+            # .env و storage پارێزراون چونکە مەنتەقییەکانی سێرڤەرن
+            echo "--- sync کردنی بەشی backend بۆ web root ---"
+            rsync -av --delete \
+              --exclude='.env' \
+              --exclude='storage/' \
+              --exclude='vendor/' \
+              "$REPO_CACHE/xwendngakan-backend/" "$DEPLOY_DIR/"
+
+            # Run deployment commands from the web root
+            cd "$DEPLOY_DIR"
+
+            echo "--- دابەزاندنی پاکەیجەکان ---"
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
-            # جێبەجێکردنی مایگرەیشن (بۆ داتابەیس)
+            echo "--- جێبەجێکردنی مایگرەیشنەکان ---"
             php artisan migrate --force
 
-            # پاککردنەوەی کاشەکان
+            echo "--- پاككردنەوە و دروستكردنەوەی کاش ---"
             php artisan optimize:clear
-
-            # دروستکردنەوەی کاشەکان
-            # تێبینی: route:cache بەکارناهێنین چونکە routes/web.php closures بەکاردەهێنێت
             php artisan config:cache
             php artisan event:cache
             php artisan view:cache
 
-            # ریلۆدکردنی PHP-FPM بۆ پاककردنەوەی OPcache
-            # (ئەگەر فەرمانەکە نەدۆزرایەوە، بەبێ هەڵە بەردەوام دەبێت)
+            echo "--- ریلۆدکردنی PHP-FPM بۆ پاككردنەوەی OPcache ---"
             (systemctl reload php-fpm \
               || systemctl reload php82-php-fpm \
               || /etc/init.d/php-fpm-8.2 reload \
               || /etc/init.d/php-fpm-8.1 reload \
-              || echo "PHP-FPM reload: فەرمانەکە نەدۆزرایەوە، دەستبەسەر بکە") 2>/dev/null || true
+              || echo "PHP-FPM reload: فەرمانەکە نەدۆزرایەوە") 2>/dev/null || true
 
-            echo "دیپلۆی بە سەرکەوتوویی تەواو بوو"
+            echo "✓ دیپلۆی بە سەرکەوتوویی تەواو بوو"
