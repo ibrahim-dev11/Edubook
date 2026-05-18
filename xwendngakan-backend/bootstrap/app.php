@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => route('portal.login'));
         $middleware->alias([
             'approved' => \App\Http\Middleware\ApprovedUser::class,
+            'redirect_admin' => \App\Http\Middleware\RedirectAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

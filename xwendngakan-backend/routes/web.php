@@ -92,13 +92,7 @@ Route::prefix('portal')->name('portal.')->group(function () {
     })->name('logout');
 
     // ---- Protected ----
-    Route::middleware(['auth', 'approved', function($request, $next) {
-        // منع الادمن من الوصول للبورتال
-        if (auth()->user()?->is_admin) {
-            return redirect('/admin');
-        }
-        return $next($request);
-    }])->group(function () {
+    Route::middleware(['auth', 'approved', 'redirect_admin'])->group(function () {
 
         Route::get('/dashboard', function () {
             $institution = auth()->user()->institution;
