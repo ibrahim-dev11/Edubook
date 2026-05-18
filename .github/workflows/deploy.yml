@@ -17,20 +17,35 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
+            set -e
+
             # تێبینی: ئەو بەشەی خوارەوە کە نووسراوە cd، پێویستە بیگۆڕیت بۆ شوێنی باکێندەکەت لە سێرڤەرەکە
             cd /www/wwwroot/khwenden.com/rebary_xwendn
-            
+
             # هێنانی کۆدە نوێیەکان
             git pull origin main
-            
+
             # دابەزاندنی پاکەیجە نوێیەکان
             composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-            
+
             # جێبەجێکردنی مایگرەیشن (بۆ داتابەیس)
             php artisan migrate --force
-            
-            # پاککردنەوەی کاشەکان و خێراکردنی سیستەمەکە
+
+            # پاککردنەوەی کاشەکان
             php artisan optimize:clear
+
+            # دروستکردنەوەی کاشەکان
+            # تێبینی: route:cache بەکارناهێنین چونکە routes/web.php closures بەکاردەهێنێت
             php artisan config:cache
-            php artisan route:cache
+            php artisan event:cache
             php artisan view:cache
+
+            # ریلۆدکردنی PHP-FPM بۆ پاककردنەوەی OPcache
+            # (ئەگەر فەرمانەکە نەدۆزرایەوە، بەبێ هەڵە بەردەوام دەبێت)
+            (systemctl reload php-fpm \
+              || systemctl reload php82-php-fpm \
+              || /etc/init.d/php-fpm-8.2 reload \
+              || /etc/init.d/php-fpm-8.1 reload \
+              || echo "PHP-FPM reload: فەرمانەکە نەدۆزرایەوە، دەستبەسەر بکە") 2>/dev/null || true
+
+            echo "دیپلۆی بە سەرکەوتوویی تەواو بوو"
