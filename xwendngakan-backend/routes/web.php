@@ -27,7 +27,11 @@ Route::prefix('portal')->name('portal.')->group(function () {
 
     Route::get('/login', function () {
         if (auth()->check()) {
-            if (auth()->user()->is_approved || auth()->user()->is_admin) {
+            // ئەگەر ئەدمین بوو بیبەرە بۆ پاناڵی ئەدمین
+            if (auth()->user()->is_admin) {
+                return redirect('/admin');
+            }
+            if (auth()->user()->is_approved) {
                 return redirect()->route('portal.dashboard');
             }
             return redirect()->route('portal.waiting');
@@ -42,6 +46,10 @@ Route::prefix('portal')->name('portal.')->group(function () {
         ]);
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+            // ئەگەر ئەدمین بوو بیبەرە بۆ پاناڵی ئەدمین
+            if (Auth::user()->is_admin) {
+                return redirect('/admin');
+            }
             return redirect()->route('portal.dashboard');
         }
         return back()->withErrors(['email' => 'ئیمەیڵ یان وشەی نهێنی هەڵەیە.'])->withInput();
@@ -70,7 +78,9 @@ Route::prefix('portal')->name('portal.')->group(function () {
 
     Route::get('/waiting-approval', function () {
         if (!auth()->check()) return redirect()->route('portal.login');
-        if (auth()->user()->is_approved || auth()->user()->is_admin) return redirect()->route('portal.dashboard');
+        // ئەگەر ئەدمین بوو بیبەرە بۆ پاناڵی ئەدمین
+        if (auth()->user()->is_admin) return redirect('/admin');
+        if (auth()->user()->is_approved) return redirect()->route('portal.dashboard');
         return view('portal.auth.waiting');
     })->name('waiting');
 
@@ -82,7 +92,13 @@ Route::prefix('portal')->name('portal.')->group(function () {
     })->name('logout');
 
     // ---- Protected ----
-    Route::middleware(['auth', 'approved'])->group(function () {
+    Route::middleware(['auth', 'approved', function($request, $next) {
+        // منع الادمن من الوصول للبورتال
+        if (auth()->user()?->is_admin) {
+            return redirect('/admin');
+        }
+        return $next($request);
+    }])->group(function () {
 
         Route::get('/dashboard', function () {
             $institution = auth()->user()->institution;
