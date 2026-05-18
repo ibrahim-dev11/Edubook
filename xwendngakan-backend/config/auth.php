@@ -42,11 +42,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        // گارڈی جیاواز بۆ پاناڵی ئەدمین — سێشنی کوکی جیاوازی خۆی هەیە
+        // گارڈی جیاواز بۆ پاناڵی ئەدمین
         'admin' => [
             'driver' => 'session',
             'provider' => 'users',
-            'cookie'  => env('ADMIN_SESSION_COOKIE', 'admin_session'),
         ],
     ],
 

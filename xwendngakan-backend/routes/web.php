@@ -48,6 +48,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
             $request->session()->regenerate();
             // ئەگەر ئەدمین بوو بیبەرە بۆ پاناڵی ئەدمین
             if (Auth::user()->is_admin) {
+                // هاوکات لە گارڈی ئەدمینەوە لۆگین بکە تاکو دووجار لۆگین پێویست نەبێت
+                Auth::guard('admin')->login(Auth::user(), $request->boolean('remember'));
                 return redirect('/admin');
             }
             return redirect()->route('portal.dashboard');
@@ -85,6 +87,7 @@ Route::prefix('portal')->name('portal.')->group(function () {
     })->name('waiting');
 
     Route::post('/logout', function (Request $request) {
+        Auth::guard('admin')->logout(); // هاوکات لە گارڈی ئەدمینیشەوە دەرچوون
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
