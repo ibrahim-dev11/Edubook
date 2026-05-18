@@ -30,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production') {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+
+        // جیاکردنەوەی کوکی سێشن بۆ ئەدمین و پۆرتال
+        if (request()->is('admin*') || (request()->is('livewire*') && str_contains(request()->header('referer', ''), '/admin'))) {
+            config(['session.cookie' => env('ADMIN_SESSION_COOKIE', 'edubook_admin_session')]);
+        }
     }
 
     /**
