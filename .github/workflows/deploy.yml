@@ -3,7 +3,7 @@ name: Deploy Laravel to Server
 on:
   push:
     branches:
-      - main # ئەگەر ناوی برانچی سەرەکیت masterـە، ئەوا ئەمە بگۆڕە بۆ master
+      - main # ئەگەر ناوی برانچی سەرەکیت  ئەوا ئەمە بگۆڕە بۆ master
 
 jobs:
   deploy:
