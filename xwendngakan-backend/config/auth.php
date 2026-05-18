@@ -42,6 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // گارڈی جیاواز بۆ پاناڵی ئەدمین - سێشنی جیاوازی خۆی هەیە
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*
