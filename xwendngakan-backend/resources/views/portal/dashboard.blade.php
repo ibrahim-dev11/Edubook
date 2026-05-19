@@ -964,10 +964,6 @@
           <div class="f-group">
             <label class="f-label">بەستەری ڤیدیۆ لە YouTube</label>
             <input type="url" name="video" class="f-input" placeholder="https://www.youtube.com/watch?v=..." value="{{ old('video', $institution?->video) }}">
-            <p style="font-size: 0.76rem; color: var(--txt2); margin-top: 6px; line-height: 1.45;">
-              💡 <b>چۆن بەستەری ڤیدیۆ وەربگرم؟</b> بچۆ سەر یوتیوب، ڤیدیۆکەت بکەرەوە، بەستەرەکەی (URL) لە شریتی ناونیشانی سەرەوە کۆپی بکە و لێرە دایبنێ. 
-              (بۆ نموونە: <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code> یان <code>https://youtu.be/dQw4w9WgXcQ</code>)
-            </p>
           </div>
         </div>
 
