@@ -1277,6 +1277,25 @@ function removeRow(btn) {
     if (list.children.length > 1) row.remove();
     else row.querySelectorAll('input').forEach(i => i.value = '');
 }
+function formatShortAddress(data) {
+    if (!data || !data.address) return data.display_name || '';
+    const addr = data.address;
+    const parts = [];
+    
+    // 1. Street or neighbourhood/suburb
+    const local = addr.road || addr.suburb || addr.neighbourhood || addr.quarter || addr.residential || addr.industrial;
+    if (local) parts.push(local);
+    
+    // 2. City or Town
+    const city = addr.city || addr.town || addr.village || addr.municipality || addr.county;
+    if (city && city !== local) parts.push(city);
+    
+    // 3. State/Region or Country
+    const region = addr.state || addr.country;
+    if (region && region !== city) parts.push(region);
+    
+    return parts.length > 0 ? parts.join(', ') : (data.display_name || '');
+}
 function handleAddrInput(value) {
     if (!value) {
         document.getElementById('lat-input').value = '';
@@ -1300,8 +1319,9 @@ function handleAddrInput(value) {
         fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ku,ar,en`)
             .then(response => response.json())
             .then(data => {
-                if (data && data.display_name) {
-                    addrField.value = data.display_name;
+                const shortAddr = formatShortAddress(data);
+                if (shortAddr) {
+                    addrField.value = shortAddr;
                     fb.textContent = '✓ کۆۆردینات و ناونیشان بە سەرکەوتوویی وەرگیران!';
                     fb.style.color = '#22c55e';
                 }
@@ -1341,8 +1361,9 @@ function getCurrentLocation(btn) {
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ku,ar,en`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data && data.display_name) {
-                        addrField.value = data.display_name;
+                    const shortAddr = formatShortAddress(data);
+                    if (shortAddr) {
+                        addrField.value = shortAddr;
                         fb.textContent = '✓ شوێن و ناونیشانی دەقیت بە سەرکەوتوویی وەرگیرا لە نەخشەوە!';
                         fb.style.color = '#22c55e';
                     } else {
