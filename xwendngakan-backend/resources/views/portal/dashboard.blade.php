@@ -680,8 +680,8 @@
             <div class="f-group">
               <label class="f-label">وڵات / هەرێم <span class="f-req">*</span></label>
               <select name="country" class="f-input" required>
-                <option value="کوردستان" {{ old('country', $institution?->country ?? 'کوردستان') == 'کوردستان' ? 'selected' : '' }}>🏔️ کوردستان</option>
-                <option value="عێراق" {{ old('country', $institution?->country) == 'عێراق' ? 'selected' : '' }}>🇮🇶 عێراق</option>
+                <option value="کوردستان" {{ old('country', $institution?->country ?? 'کوردستان') == 'کوردستان' ? 'selected' : '' }}>کوردستان</option>
+                <option value="عێراق" {{ old('country', $institution?->country) == 'عێراق' ? 'selected' : '' }}>عێراق</option>
               </select>
             </div>
             <div class="f-group">
