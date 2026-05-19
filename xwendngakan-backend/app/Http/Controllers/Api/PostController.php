@@ -76,7 +76,7 @@ class PostController extends Controller
         $request->validate([
             'title'   => 'nullable|string|max:255',
             'content' => 'nullable|string|max:5000',
-            'image'   => 'nullable|image|max:4096',
+            'image'   => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:4096',
         ]);
 
         $data = [

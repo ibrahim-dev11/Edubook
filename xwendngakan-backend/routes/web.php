@@ -145,8 +145,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
                 'wa'       => 'nullable|string|max:50',
                 'tk'       => 'nullable|string|max:255',
                 'yt'       => 'nullable|string|max:255',
-                'img'      => 'nullable|image|max:10240',
-                'logo'     => 'nullable|image|max:10240',
+                'img'      => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
+                'logo'     => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
             ]);
 
             if ($request->hasFile('img')) {
@@ -228,7 +228,7 @@ Route::prefix('portal')->name('portal.')->group(function () {
             $data = $request->validate([
                 'title'   => 'required|string|max:255',
                 'content' => 'required|string',
-                'image'   => 'nullable|image|max:4096',
+                'image'   => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:4096',
             ]);
 
             $post = new Post();

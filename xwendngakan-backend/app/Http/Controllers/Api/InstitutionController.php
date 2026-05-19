@@ -79,8 +79,8 @@ class InstitutionController extends Controller
         $request->validate([
             'nku'  => 'required|string|max:255',
             'type' => 'required|string',
-            'logo' => 'nullable|image|max:10240',
-            'img'  => 'nullable|image|max:10240',
+            'logo' => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
+            'img'  => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
         ]);
 
         $data = $request->except(['logo', 'img', 'kgAge', 'kgHours']);
