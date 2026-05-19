@@ -704,6 +704,28 @@
               <input type="text" name="addr" class="f-input" placeholder="ناونیشان..." value="{{ old('addr', $institution?->addr) }}">
             </div>
           </div>
+
+          <div class="f-row" style="margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
+            <div class="f-group" style="grid-column: span 2;">
+              <label class="f-label" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>📍 کۆۆردیناتی نەخشە (Google Maps)</span>
+                <a href="https://maps.google.com" target="_blank" style="color: var(--gold-lt); font-size: 0.78rem; text-decoration: none; font-weight: bold;">🗺 کردنەوەی نەخشە</a>
+              </label>
+              <input type="text" id="map-url-extractor" class="f-input" placeholder="بەستەری نەخشەی گوگل یان کۆۆردیناتەکان لێرە دابنێ بۆ دەرهێنانی ئۆتۆماتیکی (بۆ نموونە: 36.1912, 44.0091)" oninput="extractCoordinates(this.value)">
+              <p id="map-feedback" style="display: none; font-size: 0.75rem; margin-top: 5px; font-weight: bold;"></p>
+            </div>
+          </div>
+
+          <div class="f-row" style="margin-top: 0.5rem;">
+            <div class="f-group">
+              <label class="f-label">هێڵی پانی (Latitude)</label>
+              <input type="text" id="lat-input" name="lat" class="f-input" placeholder="بۆ نموونە: 36.1912" value="{{ old('lat', $institution?->lat) }}">
+            </div>
+            <div class="f-group">
+              <label class="f-label">هێڵی درێژی (Longitude)</label>
+              <input type="text" id="lng-input" name="lng" class="f-input" placeholder="بۆ نموونە: 44.0091" value="{{ old('lng', $institution?->lng) }}">
+            </div>
+          </div>
         </div>
 
         {{-- پەیوەندی --}}
@@ -951,6 +973,21 @@
               <label class="f-label">YouTube</label>
               <input type="url" name="yt" class="f-input" placeholder="https://youtube.com/..." value="{{ old('yt', $institution?->yt) }}">
             </div>
+          </div>
+        </div>
+
+        {{-- ڤیدیۆ --}}
+        <div class="db-card">
+          <div class="db-card-head">
+            <div class="db-card-title">🎥 ڤیدیۆی ناساندن (YouTube)</div>
+          </div>
+          <div class="f-group">
+            <label class="f-label">بەستەری ڤیدیۆ لە YouTube</label>
+            <input type="url" name="video" class="f-input" placeholder="https://www.youtube.com/watch?v=..." value="{{ old('video', $institution?->video) }}">
+            <p style="font-size: 0.76rem; color: var(--txt2); margin-top: 6px; line-height: 1.45;">
+              💡 <b>چۆن بەستەری ڤیدیۆ وەربگرم؟</b> بچۆ سەر یوتیوب، ڤیدیۆکەت بکەرەوە، بەستەرەکەی (URL) لە شریتی ناونیشانی سەرەوە کۆپی بکە و لێرە دایبنێ. 
+              (بۆ نموونە: <code>https://www.youtube.com/watch?v=dQw4w9WgXcQ</code> یان <code>https://youtu.be/dQw4w9WgXcQ</code>)
+            </p>
           </div>
         </div>
 
@@ -1251,6 +1288,27 @@ function removeRow(btn) {
     const list = row.parentElement;
     if (list.children.length > 1) row.remove();
     else row.querySelectorAll('input').forEach(i => i.value = '');
+}
+function extractCoordinates(value) {
+    if (!value) {
+        document.getElementById('map-feedback').style.display = 'none';
+        return;
+    }
+    const regex = /(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/;
+    const match = value.match(regex);
+    if (match) {
+        document.getElementById('lat-input').value = match[1];
+        document.getElementById('lng-input').value = match[2];
+        const fb = document.getElementById('map-feedback');
+        fb.style.display = 'block';
+        fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی وەرگیران: ' + match[1] + ' , ' + match[2];
+        fb.style.color = '#22c55e';
+    } else {
+        const fb = document.getElementById('map-feedback');
+        fb.style.display = 'block';
+        fb.textContent = '⚠ نەتوانرا بەستەرەکە بخوێنرێتەوە. تکایە ناونیشانی دروستی نەخشە یان کۆۆردینات دابنێ (وەک: 36.1912, 44.0091)';
+        fb.style.color = '#ff9f43';
+    }
 }
 </script>
 @endsection
