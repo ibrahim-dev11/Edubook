@@ -703,7 +703,7 @@
               <label class="f-label" style="display: flex; align-items: center; justify-content: space-between;">
                 <span>ناونیشان</span>
                 <button type="button" onclick="getCurrentLocation(this)" style="background: rgba(196,154,60,.15); color: var(--gold-lt); border: 1px solid var(--border2); padding: 3px 10px; border-radius: 6px; font-size: 0.73rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;">
-                  📡 وەرگرتنی شوێنی ئێستا
+                   دیاریکردنی شوێن لەسەر ماپ 
                 </button>
               </label>
               <input type="text" id="addr-input" name="addr" class="f-input" placeholder="ناونیشانی تەواو بنووسە یان بەستەری نەخشە دابنێ..." oninput="handleAddrInput(this.value)" value="{{ old('addr', $institution?->addr) }}">
