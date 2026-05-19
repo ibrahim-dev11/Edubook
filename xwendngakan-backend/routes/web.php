@@ -145,17 +145,19 @@ Route::prefix('portal')->name('portal.')->group(function () {
                 'wa'       => 'nullable|string|max:50',
                 'tk'       => 'nullable|string|max:255',
                 'yt'       => 'nullable|string|max:255',
-                'img'      => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
-                'logo'     => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
+                'img'      => 'nullable|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
+                'logo'     => 'nullable|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
             ]);
 
-            if ($request->hasFile('img')) {
+            // Handle image uploads — only update if a new file is provided
+            unset($data['img'], $data['logo']);
+            if ($request->hasFile('img') && $request->file('img')->isValid()) {
                 $path = $request->file('img')->store('institutions', 'public');
-                $data['img'] = '/storage/' . $path;
+                if ($path) $data['img'] = '/storage/' . $path;
             }
-            if ($request->hasFile('logo')) {
+            if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
                 $path = $request->file('logo')->store('institutions/logos', 'public');
-                $data['logo'] = '/storage/' . $path;
+                if ($path) $data['logo'] = '/storage/' . $path;
             }
 
             // Build unified colleges JSON + tuition_plans from new nested form
@@ -208,7 +210,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
                 $data['colleges'] = '';
                 $data['depts']    = implode("\n", $allDeptNames);
             }
-            $data['tuition_plans'] = json_encode($tuitionPlans, JSON_UNESCAPED_UNICODE);
+            // Pass array directly — model cast handles json encoding
+            $data['tuition_plans'] = $tuitionPlans;
 
             if ($user->institution) {
                 $user->institution->update($data);
