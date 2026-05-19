@@ -43,7 +43,6 @@ class AdminPanelProvider extends PanelProvider
                 'warning' => Color::Amber,
             ])
             ->font('Noto Kufi Arabic')
-            ->locale('ku')
             ->defaultThemeMode(ThemeMode::Dark)
             ->renderHook(
                 'panels::head.end',
