@@ -555,8 +555,26 @@
   .fee-header span:nth-child(3), .fee-header span:nth-child(4) { display: none; }
   .fee-row .f-input:nth-child(3), .fee-row .rm-btn { display: none; }
   .db-card { padding: 1.125rem; border-radius: 13px; }
-  .pg-title { font-size: 1.3rem; }
-  .db-main { padding: 1.125rem .875rem 5.5rem; }
+#academic-section.hide-fees .college-fee-strip {
+  display: none !important;
+}
+#academic-section.hide-fees .dept-col-labels,
+#academic-section.hide-fees .dept-row,
+#academic-section.hide-fees .fee-header,
+#academic-section.hide-fees .fee-row {
+  grid-template-columns: 1fr 30px !important;
+}
+#academic-section.hide-fees .dept-col-labels span:nth-child(2),
+#academic-section.hide-fees .dept-col-labels span:nth-child(3),
+#academic-section.hide-fees .fee-header span:nth-child(2),
+#academic-section.hide-fees .fee-header span:nth-child(3) {
+  display: none !important;
+}
+#academic-section.hide-fees .dept-row .f-input:nth-child(2),
+#academic-section.hide-fees .dept-row .f-input:nth-child(3),
+#academic-section.hide-fees .fee-row .f-input:nth-child(2),
+#academic-section.hide-fees .fee-row .f-input:nth-child(3) {
+  display: none !important;
 }
 </style>
 @endsection
@@ -744,6 +762,7 @@
           $showSection  = $flags['has_colleges'] || $flags['has_departments'];
           $showColleges = $flags['has_colleges'];
           $showDepts    = $flags['has_departments'];
+          $isPublic     = in_array($currentType, ['gov', 'inst5', 'inst2']);
           // Parse colleges — handles: new JSON (with depts+fee), Filament JSON, legacy newline text
           $collegesData = [];
           if (!empty($institution?->colleges)) {
@@ -783,7 +802,7 @@
                           : array_map(fn($d) => ['dept' => $d, 'fee' => '', 'discount' => ''], $deptsList);
         @endphp
 
-        <div id="academic-section" class="db-card" style="{{ $showSection ? '' : 'display:none' }}">
+        <div id="academic-section" class="db-card {{ $isPublic ? 'hide-fees' : '' }}" style="{{ $showSection ? '' : 'display:none' }}">
           <div class="db-card-head">
             <div class="db-card-title">📚 <span id="academic-title">{{ $showColleges ? 'کۆلێژ و بەشەکان' : 'بەشەکان و پارەدان' }}</span></div>
           </div>
@@ -803,10 +822,6 @@
                     <div class="college-fee-field">
                       <span class="college-fee-label">پارەی کۆلێژ (دینار)</span>
                       <input type="text" name="clg[{{ $ci }}][fee]" class="f-input" value="{{ $col['fee'] }}" placeholder="بۆ نموونە: 500,000">
-                    </div>
-                    <div class="college-fee-field">
-                      <span class="college-fee-label">داشکاندنی کۆلێژ %</span>
-                      <input type="text" name="clg[{{ $ci }}][discount]" class="f-input" value="{{ $col['discount'] }}" placeholder="بۆ نموونە: 10%">
                     </div>
                   </div>
                   <div class="college-body">
@@ -849,10 +864,6 @@
                     <div class="college-fee-field">
                       <span class="college-fee-label">پارەی کۆلێژ (دینار)</span>
                       <input type="text" name="clg[0][fee]" class="f-input" placeholder="بۆ نموونە: 500,000">
-                    </div>
-                    <div class="college-fee-field">
-                      <span class="college-fee-label">داشکاندنی کۆلێژ %</span>
-                      <input type="text" name="clg[0][discount]" class="f-input" placeholder="بۆ نموونە: 10%">
                     </div>
                   </div>
                   <div class="college-body">
@@ -1177,6 +1188,17 @@ function handleTypeChange(type) {
     title.textContent     = flags.has_colleges ? 'کۆلێژ و بەشەکان' : 'بەشەکان و پارەدان';
     grpCol.style.display  = flags.has_colleges ? '' : 'none';
     grpDept.style.display = (!flags.has_colleges && flags.has_departments) ? '' : 'none';
+
+    // Hide fees and discounts for public morning institutions (gov, inst5, inst2)
+    if (['gov', 'inst5', 'inst2'].includes(type)) {
+        section.classList.add('hide-fees');
+        // Clear fee/discount inputs so they do not submit stale values
+        section.querySelectorAll('.college-fee-strip input, .dept-row input:nth-child(2), .dept-row input:nth-child(3), .fee-row input:nth-child(2), .fee-row input:nth-child(3)').forEach(inp => {
+            inp.value = '';
+        });
+    } else {
+        section.classList.remove('hide-fees');
+    }
 }
 let _nextCi = {{ $nextCiSeed ?? 1 }};
 function addCollege() {
@@ -1195,10 +1217,6 @@ function addCollege() {
           `<div class="college-fee-field">` +
             `<span class="college-fee-label">پارەی کۆلێژ (دینار)</span>` +
             `<input type="text" name="clg[${ci}][fee]" class="f-input" placeholder="بۆ نموونە: 500,000">` +
-          `</div>` +
-          `<div class="college-fee-field">` +
-            `<span class="college-fee-label">داشکاندنی کۆلێژ %</span>` +
-            `<input type="text" name="clg[${ci}][discount]" class="f-input" placeholder="بۆ نموونە: 10%">` +
           `</div>` +
         `</div>` +
         `<div class="college-body">` +
