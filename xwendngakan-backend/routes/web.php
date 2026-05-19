@@ -145,8 +145,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
                 'wa'       => 'nullable|string|max:50',
                 'tk'       => 'nullable|string|max:255',
                 'yt'       => 'nullable|string|max:255',
-                'img'      => 'nullable|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
-                'logo'     => 'nullable|file|mimes:jpg,jpeg,png,gif,webp|max:10240',
+                'img'      => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
+                'logo'     => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
             ]);
 
             // Handle image uploads — only update if a new file is provided
