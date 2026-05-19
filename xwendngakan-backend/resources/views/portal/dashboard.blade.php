@@ -708,7 +708,7 @@
           <div class="f-row" style="margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
             <div class="f-group" style="grid-column: span 2;">
               <label class="f-label" style="display: flex; align-items: center; justify-content: space-between;">
-                <span>📍 کۆۆردیناتی نەخشە (پانی، درێژی)</span>
+                <span>📍دیارکردن لەسەر ماپ</span>
                 <button type="button" onclick="getCurrentLocation(this)" style="background: rgba(196,154,60,.15); color: var(--gold-lt); border: 1px solid var(--border2); padding: 5px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;">
                   📡 وەرگرتنی شوێنی ئێستا
                 </button>
