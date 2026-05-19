@@ -14,44 +14,6 @@ Route::get('/', function () {
     return redirect()->route('portal.home');
 })->name('home');
 
-// Secure route to run migrations on production
-Route::get('/migrate-db', function () {
-    if (request('token') !== 'edubook2026') {
-        abort(403, 'Unauthorized');
-    }
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        return 'Migrations completed successfully:<br><pre>' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
-    } catch (\Exception $e) {
-        return 'Error running migrations: ' . $e->getMessage();
-    }
-});
-
-// Secure route to view latest logs on production
-Route::get('/show-logs', function () {
-    if (request('token') !== 'edubook2026') {
-        abort(403, 'Unauthorized');
-    }
-    $logPath = storage_path('logs/laravel.log');
-    if (!file_exists($logPath)) {
-        return 'Log file does not exist.';
-    }
-    $file = new \SplFileObject($logPath, 'r');
-    $file->seek(PHP_INT_MAX);
-    $totalLines = $file->key();
-    
-    $linesToRead = 150;
-    $startLine = max(0, $totalLines - $linesToRead);
-    
-    $output = '';
-    $file->seek($startLine);
-    while (!$file->eof()) {
-        $output .= $file->current();
-        $file->next();
-    }
-    return '<pre style="background:#111;color:#eee;padding:15px;font-family:monospace;white-space:pre-wrap;word-wrap:break-word;">' . e($output) . '</pre>';
-});
-
 // =====================
 //  INSTITUTION PORTAL
 // =====================
