@@ -152,11 +152,15 @@ Route::prefix('portal')->name('portal.')->group(function () {
             // Handle image uploads — only update if a new file is provided
             unset($data['img'], $data['logo']);
             if ($request->hasFile('img') && $request->file('img')->isValid()) {
-                $path = $request->file('img')->store('institutions', 'public');
+                $file = $request->file('img');
+                $filename = md5(uniqid(rand(), true)) . '.' . strtolower($file->getClientOriginalExtension());
+                $path = $file->storeAs('institutions', $filename, 'public');
                 if ($path) $data['img'] = '/storage/' . $path;
             }
             if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
-                $path = $request->file('logo')->store('institutions/logos', 'public');
+                $file = $request->file('logo');
+                $filename = md5(uniqid(rand(), true)) . '.' . strtolower($file->getClientOriginalExtension());
+                $path = $file->storeAs('institutions/logos', $filename, 'public');
                 if ($path) $data['logo'] = '/storage/' . $path;
             }
 
