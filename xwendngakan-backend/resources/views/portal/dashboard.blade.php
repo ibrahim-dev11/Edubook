@@ -672,7 +672,7 @@
                 <option value="">— جۆر هەڵبژێرە —</option>
                 @foreach($types as $t)
                   <option value="{{ $t->key }}" {{ old('type', $institution?->type) == $t->key ? 'selected' : '' }}>
-                    {{ $t->emoji ?? '' }} {{ $t->name }}
+                    {{ $t->name }}
                   </option>
                 @endforeach
               </select>
