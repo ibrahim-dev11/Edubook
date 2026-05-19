@@ -14,6 +14,19 @@ Route::get('/', function () {
     return redirect()->route('portal.home');
 })->name('home');
 
+// Secure route to run migrations on production
+Route::get('/migrate-db', function () {
+    if (request('token') !== 'edubook2026') {
+        abort(403, 'Unauthorized');
+    }
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return 'Migrations completed successfully:<br><pre>' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return 'Error running migrations: ' . $e->getMessage();
+    }
+});
+
 // =====================
 //  INSTITUTION PORTAL
 // =====================
