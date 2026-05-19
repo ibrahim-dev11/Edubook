@@ -267,6 +267,7 @@ class InstitutionResource extends Resource
                 Tables\Columns\ImageColumn::make('logo')
                     ->label('لۆگۆ')
                     ->disk('public')
+                    ->state(fn ($record) => $record->logo ? str_replace('/storage/', '', $record->logo) : null)
                     ->circular()
                     ->size(40)
                     ->defaultImageUrl(fn () => null),

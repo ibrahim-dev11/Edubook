@@ -129,6 +129,7 @@ class TeacherResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('photo')
                     ->label('وێنە')
+                    ->disk('public')
                     ->circular()
                     ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->name) . '&background=3b82f6&color=fff'),
                 Tables\Columns\TextColumn::make('name')

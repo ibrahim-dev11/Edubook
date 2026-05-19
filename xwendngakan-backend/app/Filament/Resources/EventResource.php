@@ -33,6 +33,7 @@ class EventResource extends Resource
                     ->label('وێنە')
                     ->image()
                     ->directory('events')
+                    ->disk('public')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('description')
                     ->label('وردەکاری')
@@ -61,7 +62,8 @@ class EventResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('وێنە'),
+                    ->label('وێنە')
+                    ->disk('public'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('ناونیشان')
                     ->searchable(),

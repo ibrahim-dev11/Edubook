@@ -52,7 +52,8 @@ class NewsResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('وێنە'),
+                    ->label('وێنە')
+                    ->disk('public'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('ناونیشان')
                     ->searchable(),
