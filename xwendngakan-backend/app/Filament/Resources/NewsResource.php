@@ -33,6 +33,8 @@ class NewsResource extends Resource
                     ->label('وێنە')
                     ->image()
                     ->directory('news')
+                    ->disk('public')
+                    ->maxSize(10240)
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('content')
                     ->label('ناوەرۆک')

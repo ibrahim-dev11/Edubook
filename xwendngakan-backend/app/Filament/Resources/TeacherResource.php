@@ -56,14 +56,14 @@ class TeacherResource extends Resource
                             ->directory('teachers')
                             ->disk('public')
                             ->imagePreviewHeight('150')
-                            ->maxSize(2048),
+                            ->maxSize(10240),
                         Forms\Components\FileUpload::make('subject_photo')
                             ->label('وێنەی بابەت')
                             ->image()
                             ->directory('teachers')
                             ->disk('public')
                             ->imagePreviewHeight('150')
-                            ->maxSize(2048),
+                            ->maxSize(10240),
                         Forms\Components\TextInput::make('name')
                             ->label('ناوی سیانی')
                             ->required()

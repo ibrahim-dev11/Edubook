@@ -80,7 +80,7 @@ class PostResource extends Resource
                             ->directory('posts')
                             ->disk('public')
                             ->imagePreviewHeight('250')
-                            ->maxSize(2048)
+                            ->maxSize(10240)
                             ->columnSpanFull(),
                         
                         Forms\Components\Hidden::make('user_id')
