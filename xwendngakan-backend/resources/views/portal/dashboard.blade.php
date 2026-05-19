@@ -701,7 +701,7 @@
             </div>
             <div class="f-group">
               <label class="f-label">ناونیشان</label>
-              <input type="text" name="addr" class="f-input" placeholder="ناونیشان..." value="{{ old('addr', $institution?->addr) }}">
+              <input type="text" id="addr-input" name="addr" class="f-input" placeholder="ناونیشان..." value="{{ old('addr', $institution?->addr) }}">
             </div>
           </div>
 
@@ -1297,12 +1297,29 @@ function handleCoordsInput(value) {
     const regex = /(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/;
     const match = value.match(regex);
     if (match) {
-        document.getElementById('lat-input').value = match[1];
-        document.getElementById('lng-input').value = match[2];
+        const lat = match[1];
+        const lng = match[2];
+        document.getElementById('lat-input').value = lat;
+        document.getElementById('lng-input').value = lng;
         const fb = document.getElementById('map-feedback');
         fb.style.display = 'block';
-        fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی ناسرانەوە: ' + match[1] + ' , ' + match[2];
-        fb.style.color = '#22c55e';
+        fb.textContent = '✓ کۆۆردیناتەکان دۆزرانەوە، ئێستا ناونیشانی دەقی وەردەگیرێت...';
+        fb.style.color = '#3b82f6';
+        
+        const addrField = document.getElementById('addr-input');
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ku,ar,en`)
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.display_name) {
+                    addrField.value = data.display_name;
+                    fb.textContent = '✓ کۆۆردینات و ناونیشان بە سەرکەوتوویی وەرگیران!';
+                    fb.style.color = '#22c55e';
+                }
+            })
+            .catch(err => {
+                fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی ناسرانەوە: ' + lat + ' , ' + lng;
+                fb.style.color = '#22c55e';
+            });
     } else {
         document.getElementById('lat-input').value = '';
         document.getElementById('lng-input').value = '';
@@ -1320,6 +1337,10 @@ function getCurrentLocation(btn) {
     const originalText = btn.innerHTML;
     btn.innerHTML = '⏳ لە پرۆسەدایە...';
     btn.disabled = true;
+    
+    const addrField = document.getElementById('addr-input');
+    addrField.placeholder = '⏳ بەدەستهێنانی ناونیشانی دەقی لە نەخشەوە...';
+    
     navigator.geolocation.getCurrentPosition(
         (position) => {
             const lat = position.coords.latitude.toFixed(6);
@@ -1327,12 +1348,34 @@ function getCurrentLocation(btn) {
             document.getElementById('lat-input').value = lat;
             document.getElementById('lng-input').value = lng;
             document.getElementById('coords-display').value = lat + ', ' + lng;
+            
             const fb = document.getElementById('map-feedback');
             fb.style.display = 'block';
-            fb.textContent = '✓ شوێنەکەت بە سەرکەوتوویی وەرگیرا لە ئامێرەکەتەوە!';
-            fb.style.color = '#22c55e';
-            btn.innerHTML = originalText;
-            btn.disabled = false;
+            fb.textContent = '✓ کۆۆردینات بە سەرکەوتوویی وەرگیرا. ئێستا ناونیشانی تێکستی وەردەگیرێت...';
+            fb.style.color = '#3b82f6';
+            
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ku,ar,en`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.display_name) {
+                        addrField.value = data.display_name;
+                        fb.textContent = '✓ شوێن و ناونیشانی دەقیت بە سەرکەوتوویی وەرگیرا لە نەخشەوە!';
+                        fb.style.color = '#22c55e';
+                    } else {
+                        fb.textContent = '✓ کۆۆردینات وەرگیرا، بەڵام نەتوانرا ناونیشانی دەقی دیاری بکرێت.';
+                        fb.style.color = '#ff9f43';
+                    }
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    addrField.placeholder = 'ناونیشان...';
+                })
+                .catch(err => {
+                    fb.textContent = '✓ کۆۆردینات وەرگیرا، بەڵام پەیوەندی بە نەخشەوە نەکرا بۆ وەرگرتنی ناونیشانی دەقی.';
+                    fb.style.color = '#ff9f43';
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    addrField.placeholder = 'ناونیشان...';
+                });
         },
         (error) => {
             let msg = 'نەتوانرا شوێنەکەت دیاری بکرێت.';
@@ -1340,6 +1383,7 @@ function getCurrentLocation(btn) {
                 msg = 'تکایە ڕێگەبدە بە بەکارهێنانی لۆکەیشن بۆ ئەم ماڵپەڕە تاوەکو شوێنەکەت وەربگیرێت.';
             }
             alert(msg);
+            addrField.placeholder = 'ناونیشان...';
             btn.innerHTML = originalText;
             btn.disabled = false;
         },
