@@ -49,16 +49,12 @@
 <div class="waiting-page">
     <div class="waiting-card">
         <div class="status-icon">⏳</div>
-        <h1 class="waiting-title">هەژمارەکەت لە ژێر چاوخشاندنەوەدایە</h1>
+        <h1 class="waiting-title">هەژمارەکەت لە ژێر پرۆسێس دایە</h1>
         <p class="waiting-desc">
             سوپاس بۆ ناونووسین! زانیارییەکانی تۆ نێردراوە بۆ بەڕێوەبەر.<br>
             تکایە چاوەڕوان بە تا هەژمارەکەت پەسەند دەکرێت.
         </p>
-        <div class="waiting-steps">
-            <div class="step-item"><span class="step-dot"></span>زانیارییەکانت وەرگیرا ✅</div>
-            <div class="step-item"><span class="step-dot"></span>ئەدمین تێپەڕوی دەکات ⏳</div>
-            <div class="step-item"><span class="step-dot"></span>پاش پەسەندکردن دەتوانیت پۆست بکەیت</div>
-        </div>
+
         <form method="POST" action="{{ route('portal.logout') }}">
             @csrf
             <button type="submit" class="btn-logout">🚪 دەرچوون</button>
