@@ -245,7 +245,9 @@ Route::prefix('portal')->name('portal.')->group(function () {
             $post->approved       = false;
 
             if ($request->hasFile('image')) {
-                $path = $request->file('image')->store('posts', 'public');
+                $file = $request->file('image');
+                $filename = md5(uniqid(rand(), true)) . '.' . strtolower($file->getClientOriginalExtension());
+                $path = $file->storeAs('posts', $filename, 'public');
                 $post->image = '/storage/' . $path;
             }
             $post->save();
