@@ -946,16 +946,8 @@
               <input type="url" name="ig" class="f-input" placeholder="https://instagram.com/..." value="{{ old('ig', $institution?->ig) }}">
             </div>
             <div class="f-group">
-              <label class="f-label">Telegram</label>
-              <input type="url" name="tg" class="f-input" placeholder="https://t.me/..." value="{{ old('tg', $institution?->tg) }}">
-            </div>
-            <div class="f-group">
               <label class="f-label">WhatsApp</label>
               <input type="text" name="wa" class="f-input" placeholder="https://wa.me/..." value="{{ old('wa', $institution?->wa) }}">
-            </div>
-            <div class="f-group">
-              <label class="f-label">TikTok</label>
-              <input type="url" name="tk" class="f-input" placeholder="https://tiktok.com/@..." value="{{ old('tk', $institution?->tk) }}">
             </div>
             <div class="f-group">
               <label class="f-label">YouTube</label>
