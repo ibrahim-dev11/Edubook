@@ -52,7 +52,7 @@ jobs:
             cd "$DEPLOY_DIR"
 
             echo "--- دابەزاندنی پاکەیجەکان ---"
-            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+            composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev --ignore-platform-req=ext-fileinfo
 
             echo "--- جێبەجێکردنی مایگرەیشنەکان ---"
             php artisan migrate --force
