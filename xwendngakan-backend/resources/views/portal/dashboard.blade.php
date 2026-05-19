@@ -708,22 +708,20 @@
           <div class="f-row" style="margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
             <div class="f-group" style="grid-column: span 2;">
               <label class="f-label" style="display: flex; align-items: center; justify-content: space-between;">
-                <span>📍 کۆۆردیناتی نەخشە (Google Maps)</span>
-                <a href="https://maps.google.com" target="_blank" style="color: var(--gold-lt); font-size: 0.78rem; text-decoration: none; font-weight: bold;">🗺 کردنەوەی نەخشە</a>
+                <span>📍 کۆۆردیناتی نەخشە (پانی، درێژی)</span>
+                <button type="button" onclick="getCurrentLocation(this)" style="background: rgba(196,154,60,.15); color: var(--gold-lt); border: 1px solid var(--border2); padding: 5px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                  📡 وەرگرتنی شوێنی ئێستا
+                </button>
               </label>
-              <input type="text" id="map-url-extractor" class="f-input" placeholder="بەستەری نەخشەی گوگل یان کۆۆردیناتەکان لێرە دابنێ بۆ دەرهێنانی ئۆتۆماتیکی (بۆ نموونە: 36.1912, 44.0091)" oninput="extractCoordinates(this.value)">
+              
+              <div style="position: relative; display: flex; gap: 8px; align-items: center;">
+                <input type="text" id="coords-display" class="f-input" style="flex: 1;" placeholder="بەستەری نەخشەی گوگل لێرە دابنێ، یان کۆۆردینات بنووسە (وەک: 36.1912, 44.0091)" oninput="handleCoordsInput(this.value)" value="{{ $institution?->lat && $institution?->lng ? $institution->lat . ', ' . $institution->lng : '' }}">
+              </div>
               <p id="map-feedback" style="display: none; font-size: 0.75rem; margin-top: 5px; font-weight: bold;"></p>
-            </div>
-          </div>
-
-          <div class="f-row" style="margin-top: 0.5rem;">
-            <div class="f-group">
-              <label class="f-label">هێڵی پانی (Latitude)</label>
-              <input type="text" id="lat-input" name="lat" class="f-input" placeholder="بۆ نموونە: 36.1912" value="{{ old('lat', $institution?->lat) }}">
-            </div>
-            <div class="f-group">
-              <label class="f-label">هێڵی درێژی (Longitude)</label>
-              <input type="text" id="lng-input" name="lng" class="f-input" placeholder="بۆ نموونە: 44.0091" value="{{ old('lng', $institution?->lng) }}">
+              
+              <!-- Hidden inputs to submit to server -->
+              <input type="hidden" id="lat-input" name="lat" value="{{ old('lat', $institution?->lat) }}">
+              <input type="hidden" id="lng-input" name="lng" value="{{ old('lng', $institution?->lng) }}">
             </div>
           </div>
         </div>
@@ -1289,8 +1287,10 @@ function removeRow(btn) {
     if (list.children.length > 1) row.remove();
     else row.querySelectorAll('input').forEach(i => i.value = '');
 }
-function extractCoordinates(value) {
+function handleCoordsInput(value) {
     if (!value) {
+        document.getElementById('lat-input').value = '';
+        document.getElementById('lng-input').value = '';
         document.getElementById('map-feedback').style.display = 'none';
         return;
     }
@@ -1301,14 +1301,50 @@ function extractCoordinates(value) {
         document.getElementById('lng-input').value = match[2];
         const fb = document.getElementById('map-feedback');
         fb.style.display = 'block';
-        fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی وەرگیران: ' + match[1] + ' , ' + match[2];
+        fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی ناسرانەوە: ' + match[1] + ' , ' + match[2];
         fb.style.color = '#22c55e';
     } else {
+        document.getElementById('lat-input').value = '';
+        document.getElementById('lng-input').value = '';
         const fb = document.getElementById('map-feedback');
         fb.style.display = 'block';
-        fb.textContent = '⚠ نەتوانرا بەستەرەکە بخوێنرێتەوە. تکایە ناونیشانی دروستی نەخشە یان کۆۆردینات دابنێ (وەک: 36.1912, 44.0091)';
+        fb.textContent = '⚠ نەتوانرا کۆۆردینات دەربهێنرێت. تکایە بەستەرێکی نەخشەی گوگل یان کۆۆردیناتی دروست دابنێ (وەک: 36.1912, 44.0091)';
         fb.style.color = '#ff9f43';
     }
+}
+function getCurrentLocation(btn) {
+    if (!navigator.geolocation) {
+        alert('مۆبایلەکەت یان گەڕانکارەکەت پشتگیری وەرگرتنی شوێن ناکات.');
+        return;
+    }
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '⏳ لە پرۆسەدایە...';
+    btn.disabled = true;
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude.toFixed(6);
+            const lng = position.coords.longitude.toFixed(6);
+            document.getElementById('lat-input').value = lat;
+            document.getElementById('lng-input').value = lng;
+            document.getElementById('coords-display').value = lat + ', ' + lng;
+            const fb = document.getElementById('map-feedback');
+            fb.style.display = 'block';
+            fb.textContent = '✓ شوێنەکەت بە سەرکەوتوویی وەرگیرا لە ئامێرەکەتەوە!';
+            fb.style.color = '#22c55e';
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        },
+        (error) => {
+            let msg = 'نەتوانرا شوێنەکەت دیاری بکرێت.';
+            if (error.code === error.PERMISSION_DENIED) {
+                msg = 'تکایە ڕێگەبدە بە بەکارهێنانی لۆکەیشن بۆ ئەم ماڵپەڕە تاوەکو شوێنەکەت وەربگیرێت.';
+            }
+            alert(msg);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        },
+        { enableHighAccuracy: true, timeout: 8000 }
+    );
 }
 </script>
 @endsection
