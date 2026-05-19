@@ -32,6 +32,7 @@ jobs:
               git clone "$REPO_URL" "$REPO_CACHE"
             else
               echo "--- هێنانی کۆدە نوێیەکان ---"
+              git config --global --add safe.directory "$REPO_CACHE"
               cd "$REPO_CACHE"
               git remote set-url origin "$REPO_URL"
               git fetch origin
