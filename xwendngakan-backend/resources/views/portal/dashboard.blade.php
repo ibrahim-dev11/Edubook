@@ -700,24 +700,14 @@
               </datalist>
             </div>
             <div class="f-group">
-              <label class="f-label">ناونیشان</label>
-              <input type="text" id="addr-input" name="addr" class="f-input" placeholder="ناونیشان..." value="{{ old('addr', $institution?->addr) }}">
-            </div>
-          </div>
-
-          <div class="f-row" style="margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
-            <div class="f-group" style="grid-column: span 2;">
               <label class="f-label" style="display: flex; align-items: center; justify-content: space-between;">
-                <span>📍دیارکردن لەسەر ماپ</span>
-                <button type="button" onclick="getCurrentLocation(this)" style="background: rgba(196,154,60,.15); color: var(--gold-lt); border: 1px solid var(--border2); padding: 5px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; transition: all 0.2s;">
+                <span>ناونیشان</span>
+                <button type="button" onclick="getCurrentLocation(this)" style="background: rgba(196,154,60,.15); color: var(--gold-lt); border: 1px solid var(--border2); padding: 3px 10px; border-radius: 6px; font-size: 0.73rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;">
                   📡 وەرگرتنی شوێنی ئێستا
                 </button>
               </label>
-              
-              <div style="position: relative; display: flex; gap: 8px; align-items: center;">
-                <input type="text" id="coords-display" class="f-input" style="flex: 1;" placeholder="بەستەری نەخشەی گوگل لێرە دابنێ، یان کۆۆردینات بنووسە (وەک: 36.1912, 44.0091)" oninput="handleCoordsInput(this.value)" value="{{ $institution?->lat && $institution?->lng ? $institution->lat . ', ' . $institution->lng : '' }}">
-              </div>
-              <p id="map-feedback" style="display: none; font-size: 0.75rem; margin-top: 5px; font-weight: bold;"></p>
+              <input type="text" id="addr-input" name="addr" class="f-input" placeholder="ناونیشانی تەواو بنووسە یان بەستەری نەخشە دابنێ..." oninput="handleAddrInput(this.value)" value="{{ old('addr', $institution?->addr) }}">
+              <p id="map-feedback" style="display: none; font-size: 0.73rem; margin-top: 4px; font-weight: bold;"></p>
               
               <!-- Hidden inputs to submit to server -->
               <input type="hidden" id="lat-input" name="lat" value="{{ old('lat', $institution?->lat) }}">
@@ -1287,7 +1277,7 @@ function removeRow(btn) {
     if (list.children.length > 1) row.remove();
     else row.querySelectorAll('input').forEach(i => i.value = '');
 }
-function handleCoordsInput(value) {
+function handleAddrInput(value) {
     if (!value) {
         document.getElementById('lat-input').value = '';
         document.getElementById('lng-input').value = '';
@@ -1317,16 +1307,11 @@ function handleCoordsInput(value) {
                 }
             })
             .catch(err => {
-                fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی ناسرانەوە: ' + lat + ' , ' + lng;
+                fb.textContent = '✓ کۆۆردیناتەکان بە سەرکەوتوویی پارێزراون.';
                 fb.style.color = '#22c55e';
             });
     } else {
-        document.getElementById('lat-input').value = '';
-        document.getElementById('lng-input').value = '';
-        const fb = document.getElementById('map-feedback');
-        fb.style.display = 'block';
-        fb.textContent = '⚠ نەتوانرا کۆۆردینات دەربهێنرێت. تکایە بەستەرێکی نەخشەی گوگل یان کۆۆردیناتی دروست دابنێ (وەک: 36.1912, 44.0091)';
-        fb.style.color = '#ff9f43';
+        document.getElementById('map-feedback').style.display = 'none';
     }
 }
 function getCurrentLocation(btn) {
@@ -1347,11 +1332,10 @@ function getCurrentLocation(btn) {
             const lng = position.coords.longitude.toFixed(6);
             document.getElementById('lat-input').value = lat;
             document.getElementById('lng-input').value = lng;
-            document.getElementById('coords-display').value = lat + ', ' + lng;
             
             const fb = document.getElementById('map-feedback');
             fb.style.display = 'block';
-            fb.textContent = '✓ کۆۆردینات بە سەرکەوتوویی وەرگیرا. ئێستا ناونیشانی تێکستی وەردەگیرێت...';
+            fb.textContent = '✓ کۆۆردینات بە سەرکەوتوویی وەرگیرا. ئێستا ناونیشانی دەقی وەردەگیرێت...';
             fb.style.color = '#3b82f6';
             
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ku,ar,en`)
@@ -1367,14 +1351,14 @@ function getCurrentLocation(btn) {
                     }
                     btn.innerHTML = originalText;
                     btn.disabled = false;
-                    addrField.placeholder = 'ناونیشان...';
+                    addrField.placeholder = 'ناونیشانی تەواو بنووسە یان بەستەری نەخشە دابنێ...';
                 })
                 .catch(err => {
                     fb.textContent = '✓ کۆۆردینات وەرگیرا، بەڵام پەیوەندی بە نەخشەوە نەکرا بۆ وەرگرتنی ناونیشانی دەقی.';
                     fb.style.color = '#ff9f43';
                     btn.innerHTML = originalText;
                     btn.disabled = false;
-                    addrField.placeholder = 'ناونیشان...';
+                    addrField.placeholder = 'ناونیشانی تەواو بنووسە یان بەستەری نەخشە دابنێ...';
                 });
         },
         (error) => {
@@ -1383,7 +1367,7 @@ function getCurrentLocation(btn) {
                 msg = 'تکایە ڕێگەبدە بە بەکارهێنانی لۆکەیشن بۆ ئەم ماڵپەڕە تاوەکو شوێنەکەت وەربگیرێت.';
             }
             alert(msg);
-            addrField.placeholder = 'ناونیشان...';
+            addrField.placeholder = 'ناونیشانی تەواو بنووسە یان بەستەری نەخشە دابنێ...';
             btn.innerHTML = originalText;
             btn.disabled = false;
         },
