@@ -13,9 +13,9 @@ html, body, .fi-body {
 html, body {
     width: 100% !important;
     max-width: 100% !important;
-    overflow-x: hidden !important;
     min-height: 100vh !important;
 }
+body { overflow-x: hidden !important; }
 
 /* داخستنی سایدبار */
 .fi-sidebar,
@@ -31,13 +31,37 @@ aside.fi-sidebar,
 
 /* ناوەرۆک تەواو پان */
 .fi-layout,
-.fi-body,
-.fi-simple-layout {
+.fi-body {
     width: 100% !important;
     max-width: 100% !important;
     min-height: 100vh !important;
     display: flex !important;
     flex-direction: column !important;
+}
+
+/* لەیاوتی لۆگین (simple layout) — مەرج نەکرێت لەگەڵ ئەوی سەرەوە */
+.fi-simple-layout {
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    padding: 1.5rem !important;
+    box-sizing: border-box !important;
+}
+.dark .fi-simple-layout {
+    background-color: #090d16 !important;
+}
+.fi-simple-main {
+    width: 100% !important;
+    max-width: 28rem !important;
+}
+.dark .fi-simple-page > * {
+    background-color: #0f1624 !important;
+    border: 1px solid rgba(196,154,60,.18) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5) !important;
 }
 
 .fi-main-ctn {
