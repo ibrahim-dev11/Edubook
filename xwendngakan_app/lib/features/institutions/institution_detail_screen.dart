@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/localization/app_localizations.dart';
 import '../../data/models/institution_model.dart';
@@ -28,7 +29,7 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
   InstitutionModel? _institution;
   bool _loading = true;
   String? _error;
-  int _activeTab = 0; // 0: About, 1: Colleges, 2: Posts
+  int _activeTab = 1; // 0: About, 1: Colleges, 2: Posts
   final ScrollController _scrollController = ScrollController();
   bool _showTitle = false;
 
@@ -172,7 +173,7 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
               ),
             ),
             flexibleSpace: FlexibleSpaceBar(
-              stretchModes: const [StretchMode.zoomBackground, StretchMode.blurBackground],
+              stretchModes: const [StretchMode.zoomBackground],
               background: ClipRRect(
                 borderRadius: const BorderRadius.vertical(bottom: Radius.circular(40)),
                 child: Stack(
@@ -195,48 +196,43 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Colors.black.withValues(alpha: 0.25),
-                            typeColor.withValues(alpha: 0.90),
+                            Colors.black.withValues(alpha: 0.1),
+                            Colors.black.withValues(alpha: 0.8),
                           ],
                         ),
                       ),
                     ),
-                    // Logo Circle
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 40),
-                          Container(
-                            width: 110,
-                            height: 110,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white.withValues(alpha: 0.4), width: 4),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.15),
-                                  blurRadius: 30,
-                                  offset: const Offset(0, 15),
-                                ),
-                              ],
-                            ),
-                            child: ClipOval(
-                              child: inst.logoUrl.isNotEmpty
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: CachedNetworkImage(
-                                        imageUrl: inst.logoUrl,
-                                        fit: BoxFit.contain,
-                                        placeholder: (_, __) => Icon(Icons.school_rounded, color: typeColor, size: 45),
-                                        errorWidget: (_, __, ___) => Icon(Icons.school_rounded, color: typeColor, size: 45),
-                                      ),
-                                    )
-                                  : Icon(Icons.school_rounded, color: typeColor, size: 45),
-                            ),
+                    // Logo positioned nicely at the bottom
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 24),
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 3),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.2),
+                                blurRadius: 20,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
                           ),
-                        ],
+                          child: ClipOval(
+                            child: inst.logoUrl.isNotEmpty
+                                ? CachedNetworkImage(
+                                    imageUrl: inst.logoUrl,
+                                    fit: BoxFit.contain,
+                                    placeholder: (_, __) => Icon(Icons.school_rounded, color: typeColor, size: 40),
+                                    errorWidget: (_, __, ___) => Icon(Icons.school_rounded, color: typeColor, size: 40),
+                                  )
+                                : Icon(Icons.school_rounded, color: typeColor, size: 40),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -252,84 +248,34 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
                 // ── Name & Info ──
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    children: [
-                      Text(
-                        inst.name(lang),
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w900,
-                          fontFamily: 'Rabar',
-                          letterSpacing: -0.5,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      // Secondary language names
-                      if (lang != 'en' && inst.nen != null && inst.nen!.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          inst.nen!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.white54 : AppColors.textDark.withValues(alpha: 0.5),
-                          ),
-                        ),
-                      ],
-                      if (lang == 'en' && inst.nku != null && inst.nku!.isNotEmpty) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          inst.nku!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Rabar',
-                            color: isDark ? Colors.white54 : AppColors.textDark.withValues(alpha: 0.5),
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          if (inst.city != null && inst.city!.isNotEmpty)
-                            _InfoChip(icon: Icons.location_city_rounded, label: inst.city!, color: typeColor),
-                          if (inst.country != null && inst.country!.isNotEmpty)
-                            _InfoChip(icon: Icons.flag_rounded, label: inst.country!, color: const Color(0xFF6366F1)),
-                          if (inst.type != null && inst.type!.isNotEmpty)
-                            _InfoChip(icon: Icons.school_rounded, label: inst.type!, color: const Color(0xFFF59E0B)),
-                        ],
-                      ),
-                    ],
+                  child: Text(
+                    inst.name(lang),
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'Rabar',
+                      letterSpacing: -0.5,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 const SizedBox(height: 32),
 
-                // ── Modern Action Bar ──
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildActionItem(
-                        icon: Icons.phone_in_talk_rounded,
-                        label: l.contact,
-                        color: const Color(0xFF10B981),
-                        onTap: inst.phone != null ? () => _launch('tel:${inst.phone}') : () {},
-                      ),
-                      _buildActionItem(
-                        icon: Icons.map_rounded,
-                        label: l.map,
-                        color: const Color(0xFFEC4899),
-                        onTap: () => context.push('/map'),
-                      ),
-                    ],
+                // ── Video Card (Moved to top) ──
+                if (inst.video != null && inst.video!.isNotEmpty) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: _VideoCard(
+                      videoUrl: inst.video!,
+                      isDark: isDark,
+                      typeColor: typeColor,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 28),
+                ],
+
+                // ── Links & Actions Bar ──
+                _buildLinksAndActions(inst, l, isDark),
                 const SizedBox(height: 32),
 
                 // ── Premium Tab Switcher ──
@@ -414,6 +360,49 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
     );
   }
 
+  Widget _buildLinksAndActions(InstitutionModel inst, AppLocalizations l, bool isDark) {
+    final items = <Widget>[];
+
+    void add(IconData icon, String label, Color color, VoidCallback onTap) {
+      items.add(_buildActionItem(icon: icon, label: label, color: color, onTap: onTap));
+    }
+
+    if (inst.phone != null && inst.phone!.isNotEmpty) {
+      add(Icons.phone_in_talk_rounded, l.contact, const Color(0xFF10B981), () => _launch('tel:${inst.phone!}'));
+    }
+    
+    add(Icons.map_rounded, l.map, const Color(0xFFEC4899), () => context.push('/map'));
+    
+    if (inst.web != null && inst.web!.isNotEmpty) {
+      add(Icons.language_rounded, 'Website', const Color(0xFF6366F1), () => _launch(inst.web!));
+    }
+    if (inst.fb != null && inst.fb!.isNotEmpty) {
+      add(Icons.facebook, 'Facebook', const Color(0xFF1877F2), () => _launch(inst.fb!));
+    }
+    if (inst.ig != null && inst.ig!.isNotEmpty) {
+      add(Icons.camera_alt_rounded, 'Instagram', const Color(0xFFE4405F), () => _launch(inst.ig!));
+    }
+    if (inst.tg != null && inst.tg!.isNotEmpty) {
+      add(Icons.telegram_rounded, 'Telegram', const Color(0xFF229ED9), () => _launch(inst.tg!));
+    }
+    if (inst.wa != null && inst.wa!.isNotEmpty) {
+      add(Icons.chat_bubble_outline_rounded, 'WhatsApp', const Color(0xFF25D366), () => _launch('https://wa.me/${inst.wa}'));
+    }
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: items.map((e) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: e,
+        )).toList(),
+      ),
+    );
+  }
+
   Widget _buildTabItem(int index, String label, bool isDark) {
     final isActive = _activeTab == index;
     return Expanded(
@@ -460,7 +449,7 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
           children: [
             // Stats
             _StatsRow(isDark: isDark, inst: inst),
-            const SizedBox(height: 28),
+            const SizedBox(height: 20),
 
             // Description
             if (inst.desc != null && inst.desc!.isNotEmpty) ...[
@@ -478,17 +467,6 @@ class _InstitutionDetailScreenState extends State<InstitutionDetailScreen> {
                     color: isDark ? Colors.white70 : AppColors.textDark.withValues(alpha: 0.8),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
-
-            // Video
-            if (inst.video != null && inst.video!.isNotEmpty) ...[
-              _VideoCard(
-                videoUrl: inst.video!,
-                isDark: isDark,
-                typeColor: AppColors.typeColor(inst.type),
-                onTap: () => _launch(inst.video!),
               ),
               const SizedBox(height: 20),
             ],
@@ -892,78 +870,87 @@ class _VDivider extends StatelessWidget {
 
 // ─── Video card ───────────────────────────────────────────────────────────────
 
-class _VideoCard extends StatelessWidget {
+class _VideoCard extends StatefulWidget {
   final String videoUrl;
   final bool isDark;
   final Color typeColor;
-  final VoidCallback onTap;
-  const _VideoCard(
-      {required this.videoUrl, required this.isDark, required this.typeColor, required this.onTap});
+
+  const _VideoCard({
+    required this.videoUrl,
+    required this.isDark,
+    required this.typeColor,
+  });
+
+  @override
+  State<_VideoCard> createState() => _VideoCardState();
+}
+
+class _VideoCardState extends State<_VideoCard> {
+  YoutubePlayerController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+    if (videoId != null) {
+      _controller = YoutubePlayerController(
+        initialVideoId: videoId,
+        flags: const YoutubePlayerFlags(
+          autoPlay: true,
+          mute: false,
+          enableCaption: false,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
+    if (_controller == null) {
+      // Fallback if not a valid youtube url
+      return Container(
         width: double.infinity,
-        height: 180,
+        height: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
+          color: widget.typeColor.withValues(alpha: 0.1),
         ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(24),
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [typeColor.withValues(alpha: 0.8), typeColor],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 40),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          l.watchVideo,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontFamily: 'Rabar',
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: Center(
+          child: Text(
+            'Invalid Video URL',
+            style: TextStyle(fontFamily: 'Rabar', color: widget.typeColor),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: YoutubePlayer(
+          controller: _controller!,
+          showVideoProgressIndicator: true,
+          progressColors: const ProgressBarColors(
+            playedColor: Colors.redAccent,
+            handleColor: Colors.redAccent,
+          ),
         ),
       ),
     );
@@ -996,22 +983,18 @@ class _ContactCard extends StatelessWidget {
 
     if (inst.addr != null && inst.addr!.isNotEmpty)
       add(Icons.location_on_rounded, inst.addr!, const Color(0xFFF43F5E), null);
-    if (inst.phone != null && inst.phone!.isNotEmpty)
-      add(Icons.phone_rounded, inst.phone!, const Color(0xFF10B981), 'tel:${inst.phone}');
     if (inst.email != null && inst.email!.isNotEmpty)
       add(Icons.email_rounded, inst.email!, const Color(0xFF3B82F6), 'mailto:${inst.email}');
-    if (inst.web != null && inst.web!.isNotEmpty)
-      add(Icons.language_rounded, inst.web!, const Color(0xFF6366F1), inst.web);
-    if (inst.fb != null && inst.fb!.isNotEmpty)
-      add(Icons.facebook, 'Facebook', const Color(0xFF1877F2), inst.fb);
-    if (inst.ig != null && inst.ig!.isNotEmpty)
-      add(Icons.camera_alt_rounded, 'Instagram', const Color(0xFFE4405F), inst.ig);
-    if (inst.tg != null && inst.tg!.isNotEmpty)
-      add(Icons.telegram_rounded, 'Telegram', const Color(0xFF229ED9), inst.tg);
-    if (inst.wa != null && inst.wa!.isNotEmpty)
-      add(Icons.chat_bubble_outline_rounded, 'WhatsApp', const Color(0xFF25D366), 'https://wa.me/${inst.wa}');
 
-    if (items.isEmpty) return const SizedBox.shrink();
+    if (items.isEmpty) {
+      return Text(
+        'No contact details available.',
+        style: TextStyle(
+          color: isDark ? Colors.white54 : Colors.black54,
+          fontFamily: 'Rabar',
+        ),
+      );
+    }
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
   }
 }
