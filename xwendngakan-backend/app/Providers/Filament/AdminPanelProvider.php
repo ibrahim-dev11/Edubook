@@ -44,6 +44,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Noto Kufi Arabic')
             ->defaultThemeMode(ThemeMode::Dark)
+            ->renderHook(
+                'panels::head.end',
+                fn (): string => '<style>body { direction: rtl !important; } .fi-sidebar { right: 0 !important; left: auto !important; } .fi-main { margin-right: var(--sidebar-width) !important; margin-left: 0 !important; }</style>'
+            )
             ->navigationGroups([
                 'سەرەکی',
                 'دامەزراوەکان',
