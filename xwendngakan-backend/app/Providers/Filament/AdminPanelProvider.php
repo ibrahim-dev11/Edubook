@@ -48,19 +48,10 @@ class AdminPanelProvider extends PanelProvider
                 'panels::head.end',
                 fn (): string => '<style>
                     html, body { direction: rtl !important; }
-                    /* ڕێکخستنی ئاراستەی سایدبار بە شێوازێکی نەرم لە لای ڕاست */
-                    .fi-sidebar {
-                        right: 0 !important;
-                        left: auto !important;
-                        transform: translateX(100%) !important;
-                        transition: transform 0.25s ease-in-out !important;
-                    }
-                    .fi-sidebar-open .fi-sidebar {
-                        transform: translateX(0) !important;
-                    }
-                    /* لادانی کاریگەرییەکانی لای چەپ بۆ مۆبایل */
+                    /* تەنها ڕێکخستنی ئاراستەی سایدبار لە مۆبایل بەبێ تێکدانی ستاڵە ئەسڵیەکان */
                     @media (max-width: 1024px) {
                         .fi-sidebar {
+                            right: 0 !important;
                             left: auto !important;
                         }
                     }
