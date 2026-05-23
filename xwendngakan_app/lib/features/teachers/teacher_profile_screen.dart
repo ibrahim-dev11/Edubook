@@ -182,7 +182,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
                       ],
                       if (t.videoUrl != null && t.videoUrl!.isNotEmpty)
                         _buildSection(
-                          title: 'ڤیدیۆی پێناسەکردن',
+                          title: l.introVideo,
                           icon: Icons.play_circle_outline_rounded,
                           isDark: isDark, cardColor: cardColor,
                           child: ClipRRect(borderRadius: BorderRadius.circular(16), child: _buildVideoPlayer(t)),
@@ -360,7 +360,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen>
         ],
         if (hasPhone && hasFacebook) const SizedBox(height: 10),
         if (hasFacebook)
-          _contactRow(color: const Color(0xFF1877F2), icon: Icons.facebook_rounded, label: 'فەیسبوک', sublabel: 'پرۆفایلی فەیسبوک', onTap: () => _launch(t.facebookUrl!), isDark: isDark),
+          _contactRow(color: const Color(0xFF1877F2), icon: Icons.facebook_rounded, label: l.facebook, sublabel: l.facebookProfile, onTap: () => _launch(t.facebookUrl!), isDark: isDark),
       ]),
     );
   }

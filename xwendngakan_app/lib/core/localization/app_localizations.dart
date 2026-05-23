@@ -177,6 +177,51 @@ class AppLocalizations {
   String get female => _t({'ku': 'مێ', 'kbd': 'مێ', 'ar': 'أنثى', 'en': 'Female', 'tr': 'Kadın'});
   String get notes => _t({'ku': 'تێبینی', 'kbd': 'تێبینی', 'ar': 'ملاحظات', 'en': 'Notes', 'tr': 'Notlar'});
   String get saveCv => _t({'ku': 'CV پاشەکەوت بکە', 'kbd': 'CVیا خوە بپارێزە', 'ar': 'حفظ السيرة الذاتية', 'en': 'Save CV', 'tr': 'CV Kaydet'});
+  // CV FORM — labels, hints, validation, success
+  String get personalInfo => _t({'ku': 'زانیاری کەسی', 'kbd': 'زانیارییێن کەسی', 'ar': 'المعلومات الشخصية', 'en': 'Personal Info', 'tr': 'Kişisel Bilgiler'});
+  String get experienceAndSkills => _t({'ku': 'ئەزموون و تواناکان', 'kbd': 'ئەزموون و توانا', 'ar': 'الخبرة والمهارات', 'en': 'Experience & Skills', 'tr': 'Deneyim ve Beceriler'});
+  String get phoneNumber => _t({'ku': 'ژمارەی مۆبایل', 'kbd': 'ژمارەی مۆبایل', 'ar': 'رقم الهاتف', 'en': 'Phone Number', 'tr': 'Telefon Numarası'});
+  String get emailField => _t({'ku': 'ئیمەیڵ', 'kbd': 'ئیمەیڵ', 'ar': 'البريد الإلكتروني', 'en': 'Email', 'tr': 'E-posta'});
+  String get cityField => _t({'ku': 'شار / شوێنی نیشتەجێبوون', 'kbd': 'شار / شوێنی نیشتەجێبوون', 'ar': 'المدينة / مكان الإقامة', 'en': 'City / Residence', 'tr': 'Şehir / İkametgah'});
+  String get fieldOfStudy => _t({'ku': 'پسپۆڕی / بەشی خوێندن', 'kbd': 'پسپۆری / بەشی خوەندن', 'ar': 'التخصص / قسم الدراسة', 'en': 'Specialization / Field', 'tr': 'Uzmanlık / Bölüm'});
+  String get workExperience => _t({'ku': 'ئەزموونی کار', 'kbd': 'ئەزموونی کار', 'ar': 'الخبرة العملية', 'en': 'Work Experience', 'tr': 'İş Deneyimi'});
+  String get previousWorkplace => _t({'ku': 'شوێنی کارکردنی پێشوو (ئارەزوومەندانە)', 'kbd': 'شوێنی کارکردنی پێشوو (ئارەزوومەندانە)', 'ar': 'مكان العمل السابق (اختياري)', 'en': 'Previous Workplace (Optional)', 'tr': 'Önceki İşyeri (İsteğe Bağlı)'});
+  String get skillsAndExpertise => _t({'ku': 'تواناکان / شارەزاییەکان', 'kbd': 'توانا / شارەزایی', 'ar': 'المهارات / الخبرات', 'en': 'Skills / Expertise', 'tr': 'Beceriler / Uzmanlıklar'});
+  String get add => _t({'ku': 'زیادکردن', 'kbd': 'زیادکردن', 'ar': 'إضافة', 'en': 'Add', 'tr': 'Ekle'});
+  String get noSkillsAdded => _t({'ku': 'هیچ توانایەک زیاد نەکراوە', 'kbd': 'هیچ توانایەک زیاد نەکراوە', 'ar': 'لم تتم إضافة مهارات', 'en': 'No skills added', 'tr': 'Beceri eklenmedi'});
+  String get noLanguagesAdded => _t({'ku': 'هیچ زمانێک زیاد نەکراوە', 'kbd': 'هیچ زمانێک زیاد نەکراوە', 'ar': 'لم تتم إضافة لغات', 'en': 'No languages added', 'tr': 'Dil eklenmedi'});
+  String get languageName => _t({'ku': 'ناوی زمان', 'kbd': 'ناوی زمان', 'ar': 'اسم اللغة', 'en': 'Language Name', 'tr': 'Dil Adı'});
+  String get socialLink => _t({'ku': 'LinkedIn / Facebook (ئارەزوومەندانە)', 'kbd': 'LinkedIn / Facebook (ئارەزوومەندانە)', 'ar': 'LinkedIn / Facebook (اختياري)', 'en': 'LinkedIn / Facebook (Optional)', 'tr': 'LinkedIn / Facebook (İsteğe Bağlı)'});
+  String get additionalNotes => _t({'ku': 'تێبینی زیاتر', 'kbd': 'تێبینیێن زیاتر', 'ar': 'ملاحظات إضافية', 'en': 'Additional Notes', 'tr': 'Ek Notlar'});
+  String get profilePhoto => _t({'ku': 'وێنەی کەسی', 'kbd': 'وێنەی کەسی', 'ar': 'الصورة الشخصية', 'en': 'Profile Photo', 'tr': 'Profil Fotoğrafı'});
+  String get hintFullName => _t({'ku': 'وەک: ئیبراهیم ئیسماعیل محەمەد', 'kbd': 'وەک: ئیبراهیم ئیسماعیل محەمەد', 'ar': 'مثال: أحمد محمد علي', 'en': 'e.g. John Michael Smith', 'tr': 'ör: Ahmet Mehmet Yılmaz'});
+  String get hintPhone => _t({'ku': 'وەک: 0750xxxxxxx', 'kbd': 'وەک: 0750xxxxxxx', 'ar': 'مثال: 0750xxxxxxx', 'en': 'e.g. 0750xxxxxxx', 'tr': 'ör: 0750xxxxxxx'});
+  String get hintAge => _t({'ku': 'وەک: 25', 'kbd': 'وەک: 25', 'ar': 'مثال: 25', 'en': 'e.g. 25', 'tr': 'ör: 25'});
+  String get hintFieldOfStudy => _t({'ku': 'وەک: زانستی کۆمپیوتەر', 'kbd': 'وەک: زانستی کۆمپیوتەر', 'ar': 'مثال: علوم الحاسوب', 'en': 'e.g. Computer Science', 'tr': 'ör: Bilgisayar Bilimi'});
+  String get hintGradYear => _t({'ku': 'وەک: 2024', 'kbd': 'وەک: 2024', 'ar': 'مثال: 2024', 'en': 'e.g. 2024', 'tr': 'ör: 2024'});
+  String get hintWorkExp => _t({'ku': 'کورتەیەک لە ئەزموونی کار', 'kbd': 'کورتەیەک لە ئەزموونی کار', 'ar': 'نبذة عن خبرتك العملية', 'en': 'Brief summary of work experience', 'tr': 'İş deneyiminizin kısa özeti'});
+  String get hintPrevWork => _t({'ku': 'وەک: کۆمپانیای ئاسیاسێڵ، نەخۆشخانەی...', 'kbd': 'وەک: کۆمپانیای ئاسیاسێڵ، نەخۆشخانەی...', 'ar': 'مثال: شركة آسياسيل، مستشفى...', 'en': 'e.g. Asiacell, Hospital...', 'tr': 'ör: Asiacell, Hastane...'});
+  String get hintSkill => _t({'ku': 'وەک: گرافیک دیزاین، مایکرۆسۆفت وۆرد...', 'kbd': 'وەک: گرافیک دیزاین، مایکرۆسۆفت وۆرد...', 'ar': 'مثال: تصميم جرافيك، مايكروسوفت وورد...', 'en': 'e.g. Graphic Design, MS Word...', 'tr': 'ör: Grafik Tasarım, MS Word...'});
+  String get hintSocialLink => _t({'ku': 'لینکی هەژمارەکەت لێرە دابنێ', 'kbd': 'لینکی هەژمارەکەت لێرە دابنێ', 'ar': 'ضع رابط حسابك هنا', 'en': 'Paste your profile link here', 'tr': 'Profil bağlantınızı buraya yapıştırın'});
+  String get hintNotes => _t({'ku': 'هەر زانیارییەکی تر کە بە پێویستی دەزانیت...', 'kbd': 'هەر زانیارییەکی تر کە بە پێویستی دەزانیت...', 'ar': 'أي معلومات إضافية تراها مهمة...', 'en': 'Any additional information you find relevant...', 'tr': 'Uygun bulduğunuz herhangi bir ek bilgi...'});
+  String get hintCity => _t({'ku': 'وەک: هەولێر، سلێمانی...', 'kbd': 'وەک: هەولێر، سلێمانی...', 'ar': 'مثال: أربيل، السليمانية...', 'en': 'e.g. Erbil, Sulaymaniyah...', 'tr': 'ör: Erbil, Süleymaniye...'});
+  String get requiredField => _t({'ku': 'تکایە ئەم خانەیە پڕبکەرەوە', 'kbd': 'تکایە ئەم خانەیە پڕبکەرەوە', 'ar': 'هذا الحقل مطلوب', 'en': 'This field is required', 'tr': 'Bu alan gereklidir'});
+  String get requiredCity => _t({'ku': 'تکایە شار دیاری بکە', 'kbd': 'تکایە شار دیاری بکە', 'ar': 'يرجى تحديد المدينة', 'en': 'Please select a city', 'tr': 'Lütfen bir şehir seçin'});
+  String get requiredGender => _t({'ku': 'تکایە ڕەگەز دیاری بکە', 'kbd': 'تکایە ڕەگەز دیاری بکە', 'ar': 'يرجى تحديد الجنس', 'en': 'Please select gender', 'tr': 'Lütfen cinsiyet seçin'});
+  String get requiredEducation => _t({'ku': 'تکایە ئاستی خوێندن دیاری بکە', 'kbd': 'تکایە ئاستی خوێندن دیاری بکە', 'ar': 'يرجى تحديد المستوى التعليمي', 'en': 'Please select education level', 'tr': 'Lütfen eğitim seviyesi seçin'});
+  String get invalidPhone => _t({'ku': 'ژمارەی مۆبایل دروست نییە', 'kbd': 'ژمارەی مۆبایل دروست نییە', 'ar': 'رقم الهاتف غير صحيح', 'en': 'Invalid phone number', 'tr': 'Geçersiz telefon numarası'});
+  String get requiredAge => _t({'ku': 'تکایە تەمەن بنووسە', 'kbd': 'تکایە تەمەن بنووسە', 'ar': 'يرجى إدخال العمر', 'en': 'Please enter age', 'tr': 'Lütfen yaş girin'});
+  String get invalidAge => _t({'ku': 'تەمەن دروست نییە', 'kbd': 'تەمەن دروست نییە', 'ar': 'العمر غير صحيح', 'en': 'Invalid age', 'tr': 'Geçersiz yaş'});
+  String get requiredEmail => _t({'ku': 'تکایە ئیمەیڵ بنووسە', 'kbd': 'تکایە ئیمەیڵ بنووسە', 'ar': 'يرجى إدخال البريد الإلكتروني', 'en': 'Please enter email', 'tr': 'Lütfen e-posta girin'});
+  String get invalidYear => _t({'ku': 'تکایە ساڵێکی دروست بنووسە', 'kbd': 'تکایە ساڵێکی دروست بنووسە', 'ar': 'يرجى إدخال سنة صحيحة', 'en': 'Please enter a valid year', 'tr': 'Lütfen geçerli bir yıl girin'});
+  String get submitCv => _t({'ku': 'CV ـەکەت بنێرە', 'kbd': 'CVیا خوە بنێرە', 'ar': 'أرسل سيرتك الذاتية', 'en': 'Submit Your CV', 'tr': 'CV\'nizi Gönderin'});
+  String get cvSubmitTitle => _t({'ku': 'CV ـەکەت بە سەرکەوتوویی تۆمارکرا', 'kbd': 'CVیا تە bi serketî tomar bû', 'ar': 'تم تسجيل سيرتك الذاتية بنجاح', 'en': 'Your CV was submitted successfully', 'tr': 'CV\'niz başarıyla kaydedildi'});
+  String get cvSubmitDesc => _t({'ku': 'زانیارییەکانت بە سەرکەوتوویی نێردران. چاوەروان بە تا بڵاو دەکرێتەوە', 'kbd': 'زانیارییەکانت نێردران، چاوەروان بە', 'ar': 'تم إرسال معلوماتك بنجاح. انتظر حتى يتم نشرها', 'en': 'Your information was sent successfully. Wait until it is published.', 'tr': 'Bilgileriniz başarıyla gönderildi. Yayınlanana kadar bekleyin.'});
+  String get ok => _t({'ku': 'باشە', 'kbd': 'باشە', 'ar': 'حسناً', 'en': 'OK', 'tr': 'Tamam'});
+  // TEACHER PROFILE
+  String get introVideo => _t({'ku': 'ڤیدیۆی پێناسەکردن', 'kbd': 'ڤیدیۆی پێناسەکردن', 'ar': 'فيديو تعريفي', 'en': 'Intro Video', 'tr': 'Tanıtım Videosu'});
+  String get facebook => _t({'ku': 'فەیسبوک', 'kbd': 'فەیسبوک', 'ar': 'فيسبوك', 'en': 'Facebook', 'tr': 'Facebook'});
+  String get facebookProfile => _t({'ku': 'پرۆفایلی فەیسبوک', 'kbd': 'پرۆفایلی فەیسبوک', 'ar': 'الملف الشخصي على فيسبوك', 'en': 'Facebook Profile', 'tr': 'Facebook Profili'});
 
   // =====================
   // NOTIFICATIONS
@@ -234,15 +279,12 @@ class AppLocalizations {
   String get teacherRegisterSuccess => _t({'ku': 'داواکاریت بە سەرکەوتوویی نێردرا، بچاوە ڕاگەیەنراوەکانت', 'kbd': 'داخوازییا تە ب سەرکەفتی هاتە شاندن، ل هیڤییا بەرسڤێ بە', 'ar': 'تم إرسال طلبك بنجاح، انتظر الموافقة', 'en': 'Your request was submitted. Await approval.', 'tr': 'Talebiniz gönderildi. Onay bekleyin.'});
   String get cvSubmitSuccess => _t({'ku': 'CV ت بە سەرکەوتوویی نێردرا', 'kbd': 'CVیا تە ب سەرکەفتی هاتە شاندن', 'ar': 'تم رفع سيرتك الذاتية بنجاح', 'en': 'Your CV was submitted successfully', 'tr': 'CV\'niz başarıyla gönderildi'});
   String get successTitle => _t({'ku': 'سەرکەوتوو بوو! ✅', 'kbd': 'ب سەرکەفتی! ✅', 'ar': 'تم بنجاح! ✅', 'en': 'Success! ✅', 'tr': 'Başarılı! ✅'});
-  String get personalInfo => _t({'ku': 'زانیاری کەسی', 'kbd': 'پێزانیێن کەسی', 'ar': 'المعلومات الشخصية', 'en': 'Personal Info', 'tr': 'Kişisel Bilgiler'});
-  String get fieldOfStudy => _t({'ku': 'بواری خوێندن', 'kbd': 'بوارێ خوەندنێ', 'ar': 'مجال الدراسة', 'en': 'Field of Study', 'tr': 'Çalışma Alanı'});
   String get subjectPhoto => _t({'ku': 'وێنەی بابەت', 'kbd': 'وێنێ بابەتی', 'ar': 'صورة المادة', 'en': 'Subject Photo', 'tr': 'Ders Fotoğrafı'});
   String get teacherType => _t({'ku': 'جۆری مامۆستا', 'kbd': 'جۆرێ مامۆستەی', 'ar': 'نوع المعلم', 'en': 'Teacher Type', 'tr': 'Öğretmen Türü'});
   String get privacyPolicy => _t({'ku': 'سیاسەتی نهێنی', 'kbd': 'سیاسەتا نهێنییان', 'ar': 'سياسة الخصوصية', 'en': 'Privacy Policy', 'tr': 'Gizlilik Politikası'});
   String get helpCenter => _t({'ku': 'ناوەندی یارمەتی', 'kbd': 'سەنتەرێ هاریکاریێ', 'ar': 'مركز المساعدة', 'en': 'Help Center', 'tr': 'Yardım Merkezi'});
   String get contactInfo => _t({'ku': 'زانیاری پەیوەندی', 'kbd': 'پێزانیێن پەیوەندیێ', 'ar': 'معلومات الاتصال', 'en': 'Contact Info', 'tr': 'İletişim Bilgileri'});
   String get social => _t({'ku': 'تۆرە کۆمەڵایەتییەکان', 'kbd': 'تورێن جڤاکی', 'ar': 'التواصل الاجتماعي', 'en': 'Social Media', 'tr': 'Sosyal Medya'});
-  String get profilePhoto => _t({'ku': 'وێنەی پرۆفایل', 'kbd': 'وێنێ پرۆفایلی', 'ar': 'صورة الملف', 'en': 'Profile Photo', 'tr': 'Profil Fotoğrafı'});
   String get all => _t({'ku': 'هەموو', 'kbd': 'هەمی', 'ar': 'الكل', 'en': 'All', 'tr': 'Tümü'});
   String get stats => _t({'ku': 'ئامارەکان', 'kbd': 'ئامار', 'ar': 'الإحصائيات', 'en': 'Statistics', 'tr': 'İstatistikler'});
 

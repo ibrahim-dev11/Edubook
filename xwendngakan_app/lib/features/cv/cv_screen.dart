@@ -166,9 +166,9 @@ class _CvScreenState extends State<CvScreen> with SingleTickerProviderStateMixin
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              l.cvBank,
-                                              style: const TextStyle(
+                                            const Text(
+                                              'CV',
+                                              style: TextStyle(
                                                 fontSize: 22,
                                                 fontWeight: FontWeight.w900,
                                                 color: Colors.white,
@@ -563,7 +563,10 @@ class _AdvancedFilterSheetState extends State<_AdvancedFilterSheet> {
                     );
                   })
                 ],
-                onChanged: (v) => setState(() => _city = v),
+                onChanged: (v) {
+                  setState(() => _city = v);
+                  widget.prov.setFilter(city: v, education: _education);
+                },
               ),
               
               const SizedBox(height: 24),
@@ -585,7 +588,11 @@ class _AdvancedFilterSheetState extends State<_AdvancedFilterSheet> {
                 children: _eduLevels.map((edu) {
                   final isSelected = _education == edu;
                   return GestureDetector(
-                    onTap: () => setState(() => _education = isSelected ? null : edu),
+                    onTap: () {
+                      final next = isSelected ? null : edu;
+                      setState(() => _education = next);
+                      widget.prov.setFilter(city: _city, education: next);
+                    },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -610,33 +617,7 @@ class _AdvancedFilterSheetState extends State<_AdvancedFilterSheet> {
                 }).toList(),
               ),
               
-              const SizedBox(height: 32),
-              
-              // Apply Button
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: () {
-                    widget.prov.setFilter(city: _city, education: _education);
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    'جێبەجێکردنی فلتەر',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'Rabar',
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 16),
             ],
           ),
         ),
@@ -660,43 +641,6 @@ class _CircularBlob extends StatelessWidget {
         shape: BoxShape.circle,
         color: color,
       ),
-    );
-  }
-}
-
-class _BackIcon extends StatelessWidget {
-  final bool isDark;
-  const _BackIcon({required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.15),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 18),
-      ),
-    );
-  }
-}
-
-class _NotificationIcon extends StatelessWidget {
-  final bool isDark;
-  const _NotificationIcon({required this.isDark});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 20),
     );
   }
 }

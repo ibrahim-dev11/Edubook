@@ -19,6 +19,7 @@ class _CvFormScreenState extends State<CvFormScreen>
     with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _api = ApiService();
+  late AppLocalizations _l;
 
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
@@ -100,15 +101,15 @@ class _CvFormScreenState extends State<CvFormScreen>
     
     // Additional validation for City and Gender which are dropdowns/autocomplete
     if (_city == null || _city!.trim().isEmpty) {
-      _showError('تکایە شار / شوێنی نیشتەجێبوون دیاری بکە');
+      _showError(_l.requiredCity);
       return;
     }
     if (_gender == null) {
-      _showError('تکایە ڕەگەز دیاری بکە');
+      _showError(_l.requiredGender);
       return;
     }
     if (_educationLevel == null) {
-      _showError('تکایە ئاستی خوێندن دیاری بکە');
+      _showError(_l.requiredEducation);
       return;
     }
 
@@ -153,6 +154,7 @@ class _CvFormScreenState extends State<CvFormScreen>
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    _l = l;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_submitted) return const _SuccessScreen();
@@ -212,82 +214,83 @@ class _CvFormScreenState extends State<CvFormScreen>
                                 isDark,
                                 icon: Icons.person_rounded,
                                 color: AppColors.primary,
-                                title: 'زانیاری کەسی',
+                                title: l.personalInfo,
                                 children: [
                                   _PremiumField(
                                       controller: _nameCtrl,
-                                      label: 'ناوی سیانی تەواو',
-                                      hint: 'وەک: ئیبراهیم ئیسماعیل محەمەد',
+                                      label: l.fullName,
+                                      hint: l.hintFullName,
                                       icon: Icons.badge_outlined,
                                       isDark: isDark,
                                       validator: (v) => (v == null || v.trim().isEmpty)
-                                          ? 'تکایە ئەم خانەیە پڕبکەرەوە'
+                                          ? l.requiredField
                                           : null),
                                   const SizedBox(height: 14),
                                   Row(children: [
                                     Expanded(
                                         child: _PremiumField(
                                             controller: _phoneCtrl,
-                                            label: 'ژمارەی مۆبایل',
-                                            hint: 'وەک: 0750xxxxxxx',
+                                            label: l.phoneNumber,
+                                            hint: l.hintPhone,
                                             icon: Icons.phone_outlined,
                                             isDark: isDark,
                                             keyboardType: TextInputType.phone,
                                             validator: (v) {
-                                              if (v == null || v.trim().isEmpty) return 'تکایە ئەم خانەیە پڕبکەرەوە';
-                                              if (!RegExp(r'^(07)[0-9]{9}$').hasMatch(v.trim())) return 'ژمارەی مۆبایل دروست نییە';
+                                              if (v == null || v.trim().isEmpty) return l.requiredField;
+                                              if (!RegExp(r'^(07)[0-9]{9}$').hasMatch(v.trim())) return l.invalidPhone;
                                               return null;
                                             })),
                                     const SizedBox(width: 12),
                                     Expanded(
                                         child: _PremiumField(
                                             controller: _ageCtrl,
-                                            label: 'تەمەن',
-                                            hint: 'وەک: 25',
+                                            label: l.age,
+                                            hint: l.hintAge,
                                             icon: Icons.cake_outlined,
                                             isDark: isDark,
                                             keyboardType: TextInputType.number,
                                             validator: (v) {
-                                              if (v == null || v.trim().isEmpty) return 'تکایە تەمەن بنووسە';
-                                              if (int.tryParse(v.trim()) == null) return 'تەمەن دروست نییە';
+                                              if (v == null || v.trim().isEmpty) return l.requiredAge;
+                                              if (int.tryParse(v.trim()) == null) return l.invalidAge;
                                               return null;
                                             })),
                                   ]),
                                   const SizedBox(height: 14),
                                   _PremiumField(
                                       controller: _emailCtrl,
-                                      label: 'ئیمەیڵ',
+                                      label: l.emailField,
                                       icon: Icons.email_outlined,
                                       isDark: isDark,
                                       keyboardType: TextInputType.emailAddress,
                                       hint: 'example@gmail.com',
                                       validator: (v) {
-                                        if (v == null || v.trim().isEmpty) return 'تکایە ئیمەیڵەکەت بنووسە';
-                                        if (!v.contains('@')) return 'ئیمەیڵ دروست نییە';
+                                        if (v == null || v.trim().isEmpty) return l.requiredEmail;
+                                        if (!v.contains('@')) return l.invalidEmail;
                                         return null;
                                       }),
                                   const SizedBox(height: 14),
                                   _CityAutocomplete(
                                     value: _city,
-                                    label: 'شار / شوێنی نیشتەجێبوون',
+                                    label: l.cityField,
+                                    hint: l.hintCity,
                                     isDark: isDark,
                                     onChanged: (v) => setState(() => _city = v),
                                   ),
                                   const SizedBox(height: 14),
                                   _PremiumDropdown<String>(
                                     value: _gender,
-                                    label: 'ڕەگەز',
+                                    label: l.gender,
                                     icon: Icons.people_outline,
                                     isDark: isDark,
-                                    items: const [
+                                    items: [
                                       DropdownMenuItem(
                                           value: 'male',
-                                          child: Text('♂ نێر',
-                                              style: TextStyle(fontFamily: 'Rabar'))),
+                                          child: Text('♂ ${l.male}',
+                                              style: const TextStyle(fontFamily: 'Rabar'))),
                                       DropdownMenuItem(
                                           value: 'female',
-                                          child: Text('♀ مێ',
-                                              style: TextStyle(fontFamily: 'Rabar'))),
+                                          child: Text('♀ ${l.female}',
+                                              style: const TextStyle(fontFamily: 'Rabar'))),
                                     ],
                                     onChanged: (v) =>
                                         setState(() => _gender = v),
@@ -302,23 +305,23 @@ class _CvFormScreenState extends State<CvFormScreen>
                                 isDark,
                                 icon: Icons.school_rounded,
                                 color: AppColors.success,
-                                title: 'خوێندن',
+                                title: l.education,
                                 children: [
                                   _PremiumField(
                                       controller: _fieldCtrl,
-                                      label: 'پسپۆڕی / بەشی خوێندن',
+                                      label: l.fieldOfStudy,
                                       icon: Icons.book_outlined,
                                       isDark: isDark,
-                                      hint: 'وەک: زانستی کۆمپیوتەر',
+                                      hint: l.hintFieldOfStudy,
                                       validator: (v) => (v == null || v.trim().isEmpty)
-                                          ? 'تکایە ئەم خانەیە پڕبکەرەوە'
+                                          ? l.requiredField
                                           : null),
                                   const SizedBox(height: 14),
                                   Row(children: [
                                     Expanded(
                                         child: _PremiumDropdown<String>(
                                       value: _educationLevel,
-                                      label: 'ئاستی خوێندن',
+                                      label: l.educationLevel,
                                       icon: Icons.military_tech_outlined,
                                       isDark: isDark,
                                       items: _eduLevels
@@ -336,14 +339,14 @@ class _CvFormScreenState extends State<CvFormScreen>
                                     Expanded(
                                         child: _PremiumField(
                                             controller: _gradYearCtrl,
-                                            label: 'ساڵی دەرچوون',
+                                            label: l.graduationYear,
                                             icon: Icons.calendar_today_outlined,
                                             isDark: isDark,
-                                            hint: 'وەک: 2024',
+                                            hint: l.hintGradYear,
                                             keyboardType: TextInputType.number,
                                             validator: (v) {
                                               if (v != null && v.trim().isNotEmpty && int.tryParse(v.trim()) == null) {
-                                                return 'تکایە ساڵێکی دروست بنووسە';
+                                                return l.invalidYear;
                                               }
                                               return null;
                                             })),
@@ -358,42 +361,42 @@ class _CvFormScreenState extends State<CvFormScreen>
                                 isDark,
                                 icon: Icons.work_rounded,
                                 color: AppColors.accent,
-                                title: 'ئەزموون و تواناکان',
+                                title: l.experienceAndSkills,
                                 children: [
                                   _PremiumField(
                                       controller: _expCtrl,
-                                      label: 'ئەزموونی کار',
+                                      label: l.workExperience,
                                       icon: Icons.work_outline,
                                       isDark: isDark,
-                                      hint: 'کورتەیەک لە ئەزموونی کار',
+                                      hint: l.hintWorkExp,
                                       maxLines: 3),
                                   const SizedBox(height: 14),
                                   _PremiumField(
                                       controller: _prevWorkCtrl,
-                                      label: 'شوێنی کارکردنی پێشوو (ئارەزوومەندانە)',
+                                      label: l.previousWorkplace,
                                       icon: Icons.business_center_outlined,
                                       isDark: isDark,
-                                      hint: 'وەک: کۆمپانیای ئاسیاسێڵ، نەخۆشخانەی...'),
+                                      hint: l.hintPrevWork),
                                   const SizedBox(height: 14),
                                   // Dynamic Skills Section
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Row(children: [
-                                        Icon(Icons.star_outline, color: AppColors.primary, size: 20),
-                                        SizedBox(width: 8),
-                                        Text('تواناکان / شارەزاییەکان', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Rabar')),
+                                      Row(children: [
+                                        const Icon(Icons.star_outline, color: AppColors.primary, size: 20),
+                                        const SizedBox(width: 8),
+                                        Text(l.skillsAndExpertise, style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Rabar')),
                                       ]),
                                       TextButton.icon(
                                         onPressed: () => setState(() => _selectedSkills.add('')),
                                         icon: const Icon(Icons.add_circle_outline, size: 18),
-                                        label: const Text('زیادکردن', style: TextStyle(fontFamily: 'Rabar')),
+                                        label: Text(l.add, style: const TextStyle(fontFamily: 'Rabar')),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(height: 8),
                                   if (_selectedSkills.isEmpty)
-                                    Center(child: Text('هیچ توانایەک زیاد نەکراوە', style: TextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38, fontFamily: 'Rabar'))),
+                                    Center(child: Text(l.noSkillsAdded, style: TextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38, fontFamily: 'Rabar'))),
                                   ..._selectedSkills.asMap().entries.map((entry) {
                                     int idx = entry.key;
                                     return Padding(
@@ -405,7 +408,7 @@ class _CvFormScreenState extends State<CvFormScreen>
                                               initialValue: entry.value,
                                               onChanged: (v) => _selectedSkills[idx] = v,
                                               decoration: InputDecoration(
-                                                hintText: 'وەک: گرافیک دیزاین، مایکرۆسۆفت وۆرد...',
+                                                hintText: l.hintSkill,
                                                 isDense: true,
                                                 hintStyle: const TextStyle(fontSize: 12, fontFamily: 'Rabar'),
                                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -426,21 +429,21 @@ class _CvFormScreenState extends State<CvFormScreen>
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      const Row(children: [
-                                        Icon(Icons.language_outlined, color: AppColors.primary, size: 20),
-                                        SizedBox(width: 8),
-                                        Text('زمانەکان', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Rabar')),
+                                      Row(children: [
+                                        const Icon(Icons.language_outlined, color: AppColors.primary, size: 20),
+                                        const SizedBox(width: 8),
+                                        Text(l.languages, style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Rabar')),
                                       ]),
                                       TextButton.icon(
                                         onPressed: () => setState(() => _selectedLangs.add({'name': '', 'level': 'مامناوەند'})),
                                         icon: const Icon(Icons.add_circle_outline, size: 18),
-                                        label: const Text('زیادکردن', style: TextStyle(fontFamily: 'Rabar')),
+                                        label: Text(l.add, style: const TextStyle(fontFamily: 'Rabar')),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(height: 8),
                                   if (_selectedLangs.isEmpty)
-                                    Center(child: Text('هیچ زمانێک زیاد نەکراوە', style: TextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38, fontFamily: 'Rabar'))),
+                                    Center(child: Text(l.noLanguagesAdded, style: TextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38, fontFamily: 'Rabar'))),
                                   ..._selectedLangs.asMap().entries.map((entry) {
                                     int idx = entry.key;
                                     return Padding(
@@ -453,7 +456,7 @@ class _CvFormScreenState extends State<CvFormScreen>
                                               initialValue: entry.value['name'],
                                               onChanged: (v) => _selectedLangs[idx]['name'] = v,
                                               decoration: InputDecoration(
-                                                hintText: 'ناوی زمان',
+                                                hintText: l.languageName,
                                                 isDense: true,
                                                 hintStyle: const TextStyle(fontSize: 12, fontFamily: 'Rabar'),
                                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -486,17 +489,17 @@ class _CvFormScreenState extends State<CvFormScreen>
                                   const SizedBox(height: 14),
                                   _PremiumField(
                                       controller: _socialCtrl,
-                                      label: 'LinkedIn / Facebook (ئارەزوومەندانە)',
+                                      label: l.socialLink,
                                       icon: Icons.link_outlined,
                                       isDark: isDark,
-                                      hint: 'لینکی هەژمارەکەت لێرە دابنێ'),
+                                      hint: l.hintSocialLink),
                                   const SizedBox(height: 14),
                                   _PremiumField(
                                       controller: _notesCtrl,
-                                      label: 'تێبینی زیاتر',
+                                      label: l.additionalNotes,
                                       icon: Icons.notes_outlined,
                                       isDark: isDark,
-                                      hint: 'هەر زانیارییەکی تر کە بە پێویستی دەزانیت...',
+                                      hint: l.hintNotes,
                                       maxLines: 3),
                                 ],
                               ),
@@ -599,14 +602,14 @@ class _CvFormScreenState extends State<CvFormScreen>
                 ],
               ),
               child: _photo == null
-                  ? const Column(
+                  ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.add_a_photo_outlined,
+                        const Icon(Icons.add_a_photo_outlined,
                             color: AppColors.primary, size: 30),
-                        SizedBox(height: 4),
-                        Text('وێنەی کەسی',
-                            style: TextStyle(
+                        const SizedBox(height: 4),
+                        Text(_l.profilePhoto,
+                            style: const TextStyle(
                                 fontSize: 11,
                                 fontFamily: 'Rabar',
                                 color: AppColors.primary,
@@ -722,15 +725,15 @@ class _CvFormScreenState extends State<CvFormScreen>
                 height: 26,
                 child: CircularProgressIndicator(
                     color: Colors.white, strokeWidth: 2.5))
-            : const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text('CV ـەکەت بنێرە',
-                    style: TextStyle(
+            : Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(_l.submitCv,
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
                         color: Colors.white,
                         fontFamily: 'Rabar')),
-                SizedBox(width: 10),
-                Icon(Icons.send_rounded, color: Colors.white, size: 20),
+                const SizedBox(width: 10),
+                const Icon(Icons.send_rounded, color: Colors.white, size: 20),
               ]),
       ),
     );
@@ -819,12 +822,14 @@ class _PremiumField extends StatelessWidget {
 class _CityAutocomplete extends StatefulWidget {
   final String? value;
   final String label;
+  final String? hint;
   final bool isDark;
   final void Function(String?) onChanged;
 
   const _CityAutocomplete({
     required this.value,
     required this.label,
+    this.hint,
     required this.isDark,
     required this.onChanged,
   });
@@ -850,7 +855,7 @@ class _CityAutocompleteState extends State<_CityAutocomplete> {
 
   InputDecoration _decoration(String label, bool isDark) => InputDecoration(
         labelText: label,
-        hintText: 'وەک: هەولێر، سلێمانی...',
+        hintText: widget.hint ?? 'وەک: هەولێر، سلێمانی...',
         prefixIcon: const Icon(Icons.location_on_outlined,
             color: AppColors.primary, size: 20),
         suffixIcon:
@@ -1106,6 +1111,7 @@ class _SuccessScreenState extends State<_SuccessScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor:
@@ -1129,7 +1135,7 @@ class _SuccessScreenState extends State<_SuccessScreen>
             FadeTransition(
                 opacity: _fade,
                 child: Column(children: [
-                  Text('CV ـەکەت بە سەرکەوتوویی تۆمارکرا',
+                  Text(l.cvSubmitTitle,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 24,
@@ -1138,7 +1144,7 @@ class _SuccessScreenState extends State<_SuccessScreen>
                           fontFamily: 'Rabar')),
                   const SizedBox(height: 16),
                   Text(
-                      'زانیارییەکانت بە سەرکەوتوویی نێردران. چاوەروان بە تا بڵاو دەکرێتەوە',
+                      l.cvSubmitDesc,
                       style: TextStyle(
                           fontSize: 15,
                           color: isDark ? Colors.white60 : Colors.black54,
@@ -1165,8 +1171,8 @@ class _SuccessScreenState extends State<_SuccessScreen>
                           shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20))),
-                      child: const Text('باشە',
-                          style: TextStyle(
+                      child: Text(l.ok,
+                          style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,

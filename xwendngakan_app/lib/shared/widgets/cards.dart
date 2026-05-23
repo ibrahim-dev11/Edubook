@@ -5,7 +5,6 @@ import '../../core/constants/app_constants.dart';
 import '../../data/models/institution_model.dart';
 import '../../data/models/teacher_model.dart';
 import '../../data/models/cv_model.dart';
-import 'common_widgets.dart';
 
 /// =====================
 /// INSTITUTION CARD

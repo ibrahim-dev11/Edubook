@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_constants.dart';
 import '../../core/localization/app_localizations.dart';
-import '../../providers/institutions_provider.dart';
 import '../../shared/widgets/common_widgets.dart';
 
 class PathFinderScreen extends StatefulWidget {

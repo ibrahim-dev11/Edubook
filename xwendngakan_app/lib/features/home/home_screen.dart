@@ -31,7 +31,6 @@ class _SubFilterItem {
   final String id;
   final String name;
   final String? type;
-  final String? sector;
   final IconData? icon;
   final String? emoji;
 
@@ -39,7 +38,6 @@ class _SubFilterItem {
     required this.id,
     required this.name,
     this.type,
-    this.sector,
     this.icon,
     this.emoji,
   });
@@ -66,13 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _searchCtrl.dispose();
     super.dispose();
-  }
-
-  String _greeting(AppLocalizations l) {
-    final h = DateTime.now().hour;
-    if (h < 12) return l.goodMorning;
-    if (h < 17) return l.goodAfternoon;
-    return l.goodEvening;
   }
 
   @override
@@ -873,7 +864,7 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               _selectedChildFilterId = firstReal.id;
             });
-            p.setFilter(type: firstReal.type, sector: firstReal.sector);
+            p.setFilter(type: firstReal.type, sector: null);
           } else {
             p.setFilter(type: null, sector: null);
           }
@@ -939,7 +930,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedChildFilterId = item.id;
         });
         final p = Provider.of<InstitutionsProvider>(context, listen: false);
-        p.setFilter(type: item.type ?? 'all', sector: item.sector ?? 'all');
+        p.setFilter(type: item.type ?? 'all', sector: 'all');
       },
       child: AnimatedContainer(
         duration: AppConstants.medium,
