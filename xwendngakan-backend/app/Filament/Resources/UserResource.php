@@ -93,7 +93,12 @@ class UserResource extends Resource
                     ->label('پەسەندکراوە')
                     ->boolean()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->getStateUsing(fn (User $record) => $record->user_type === 'portal' || $record->user_type === null ? $record->is_approved : null)
+                    ->trueIcon('heroicon-m-check-badge')
+                    ->falseIcon('heroicon-m-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('بەرواری تۆمارکردن')
                     ->dateTime('Y/m/d H:i')
