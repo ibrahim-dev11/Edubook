@@ -99,7 +99,10 @@ Route::prefix('portal')->name('portal.')->group(function () {
     Route::middleware(['auth', 'approved', 'redirect_admin'])->group(function () {
 
         Route::get('/dashboard', function () {
-            $institution = auth()->user()->institution;
+            $user = auth()->user();
+            $institution = Institution::where('user_id', $user->id)
+                ->orderByDesc('approved')
+                ->first();
             $posts = $institution
                 ? Post::where('institution_id', $institution->id)->latest()->get()
                 : collect();
@@ -114,6 +117,10 @@ Route::prefix('portal')->name('portal.')->group(function () {
 
         Route::post('/institution/save', function (Request $request) {
             $user = auth()->user();
+            // Always prefer the approved institution to avoid orphan duplicates
+            $linkedInstitution = Institution::where('user_id', $user->id)
+                ->orderByDesc('approved')
+                ->first();
             $data = $request->validate([
                 'nku'      => 'required|string|max:255',
                 'nar'      => 'nullable|string|max:255',
@@ -221,8 +228,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
             // Pass array directly — model cast handles json encoding
             $data['tuition_plans'] = $tuitionPlans;
 
-            if ($user->institution) {
-                $user->institution->update($data);
+            if ($linkedInstitution) {
+                $linkedInstitution->update($data);
             } else {
                 $data['user_id']  = $user->id;
                 $data['approved'] = false;
@@ -232,7 +239,10 @@ Route::prefix('portal')->name('portal.')->group(function () {
         })->name('institution.save');
 
         Route::post('/posts/store', function (Request $request) {
-            $institution = auth()->user()->institution;
+            $user = auth()->user();
+            $institution = Institution::where('user_id', $user->id)
+                ->orderByDesc('approved')
+                ->first();
             if (!$institution) return back()->with('error', 'پێشتر دامەزراوەکەت تۆمار بکە.');
             if (!$institution->approved) return back()->with('error', 'دامەزراوەکەت هێشتا قبوڵ نەکراوە. پاش قبوڵکردنی ئەدمین دەتوانیت پۆست بکەیت.');
 
@@ -259,7 +269,10 @@ Route::prefix('portal')->name('portal.')->group(function () {
         })->name('posts.store');
 
         Route::delete('/posts/{id}', function ($id) {
-            $institution = auth()->user()->institution;
+            $user = auth()->user();
+            $institution = Institution::where('user_id', $user->id)
+                ->orderByDesc('approved')
+                ->first();
             if (!$institution) abort(403);
             $post = Post::where('id', $id)->where('institution_id', $institution->id)->firstOrFail();
             $post->delete();
