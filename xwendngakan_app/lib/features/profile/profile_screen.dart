@@ -73,7 +73,7 @@ class ProfileScreen extends StatelessWidget {
                       icon: Icons.language_rounded,
                       iconBg: const Color(0xFF1D9E75),
                       label: l.language,
-                      subtitle: AppConstants.languages[locale.locale.languageCode]?['name'] ?? '',
+                      subtitle: l.localizedLangName(locale.locale.languageCode),
                       onTap: () => _showLanguagePicker(context, locale, l),
                     ),
                     _Divider(isDark: isDark),
@@ -652,7 +652,7 @@ class _LanguageSheet extends StatelessWidget {
                 final selected = locale.locale.languageCode == e.key;
                 return _LangTile(
                   flag: e.value['flag'] ?? '',
-                  name: e.value['name'] ?? '',
+                  name: l.localizedLangName(e.key),
                   selected: selected,
                   isDark: isDark,
                   onTap: () {

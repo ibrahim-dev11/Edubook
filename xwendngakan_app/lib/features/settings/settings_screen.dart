@@ -50,7 +50,7 @@ class SettingsScreen extends StatelessWidget {
             _SettingTile(
               icon: Icons.translate_rounded,
               label: l.selectLanguage,
-              subtitle: AppConstants.languages[locale.locale.languageCode]?['name'] ?? '',
+              subtitle: l.localizedLangName(locale.locale.languageCode),
               onTap: () => context.push('/language-select?from=settings'),
             ),
 

@@ -193,6 +193,20 @@ class AppLocalizations {
   String get settings => _t({'ku': 'ڕێکخستنەکان', 'kbd': 'ڕێکخستن', 'ar': 'الإعدادات', 'en': 'Settings', 'tr': 'Ayarlar'});
   String get editProfile => _t({'ku': 'پرۆفایل دەستکاری بکە', 'kbd': 'دەستکاریا پرۆفایلی بکە', 'ar': 'تعديل الملف', 'en': 'Edit Profile', 'tr': 'Profili Düzenle'});
   String get language => _t({'ku': 'زمان', 'kbd': 'زمان', 'ar': 'اللغة', 'en': 'Language', 'tr': 'Dil'});
+  // Language names — localized by current UI language
+  String get langNameKu  => _t({'ku': 'کوردی (سۆرانی)', 'kbd': 'کوردی (سۆرانی)', 'ar': 'الكردية (السورانية)', 'en': 'Kurdish (Sorani)', 'tr': 'Kürtçe (Sorani)'});
+  String get langNameKbd => _t({'ku': 'کوردی (بادینی)', 'kbd': 'کوردی (بادینی)', 'ar': 'الكردية (البادينية)', 'en': 'Kurdish (Badini)', 'tr': 'Kürtçe (Badini)'});
+  String get langNameAr  => _t({'ku': 'عەرەبی', 'kbd': 'عەرەبی', 'ar': 'العربية', 'en': 'Arabic', 'tr': 'Arapça'});
+  String get langNameEn  => _t({'ku': 'ئینگلیزی', 'kbd': 'ئینگلیزی', 'ar': 'الإنجليزية', 'en': 'English', 'tr': 'İngilizce'});
+  String localizedLangName(String code) {
+    switch (code) {
+      case 'ku':  return langNameKu;
+      case 'kbd': return langNameKbd;
+      case 'ar':  return langNameAr;
+      case 'en':  return langNameEn;
+      default:    return code;
+    }
+  }
   String get darkMode => _t({'ku': 'دۆخی تاریک', 'kbd': 'مۆدێ تاریک', 'ar': 'الوضع الداكن', 'en': 'Dark Mode', 'tr': 'Karanlık Mod'});
   String get lightMode => _t({'ku': 'دۆخی ڕووناک', 'kbd': 'مۆدێ رووناک', 'ar': 'الوضع الفاتح', 'en': 'Light Mode', 'tr': 'Aydınlık Mod'});
   String get appearance => _t({'ku': 'دیمەن', 'kbd': 'دیمەن', 'ar': 'المظهر', 'en': 'Appearance', 'tr': 'Görünüm'});
