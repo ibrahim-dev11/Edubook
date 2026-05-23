@@ -95,25 +95,6 @@ class UserResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->icon('heroicon-o-envelope'),
-                Tables\Columns\TextColumn::make('user_type')
-                    ->label('جۆری هەژمار')
-                    ->badge()
-                    ->formatStateUsing(fn (?string $state): string => match ($state) {
-                        'portal'  => 'دامەزراوە',
-                        'mobile'  => 'مۆبایل ئەپ',
-                        default   => 'مۆبایل ئەپ',
-                    })
-                    ->color(fn (?string $state): string => match ($state) {
-                        'portal'  => 'warning',
-                        'mobile'  => 'info',
-                        default   => 'info',
-                    })
-                    ->icon(fn (?string $state): string => match ($state) {
-                        'portal'  => 'heroicon-o-building-office',
-                        'mobile'  => 'heroicon-o-device-phone-mobile',
-                        default   => 'heroicon-o-device-phone-mobile',
-                    })
-                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_approved')
                     ->label('پەسەندکراوە')
                     ->boolean()
@@ -127,12 +108,6 @@ class UserResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                Tables\Filters\SelectFilter::make('user_type')
-                    ->label('جۆری هەژمار')
-                    ->options([
-                        'mobile' => 'مۆبایل ئەپ',
-                        'portal' => 'دامەزراوە',
-                    ]),
                 Tables\Filters\TernaryFilter::make('is_approved')
                     ->label('پەسەندکراوە')
                     ->trueLabel('چالاک')
