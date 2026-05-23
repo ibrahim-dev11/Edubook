@@ -186,7 +186,10 @@ Route::prefix('portal')->name('portal.')->group(function () {
             $tuitionPlans = [];
             $allDeptNames = [];
 
-            if (!empty($clgInput)) {
+            $typeObj = InstitutionType::where('key', $data['type'])->first();
+            $hasColleges = $typeObj ? (bool)$typeObj->has_colleges : false;
+
+            if ($hasColleges && !empty($clgInput)) {
                 // Mode 1: has colleges (universities, institutes)
                 foreach (array_values($clgInput) as $col) {
                     $colName = trim((string)($col['name'] ?? ''));
