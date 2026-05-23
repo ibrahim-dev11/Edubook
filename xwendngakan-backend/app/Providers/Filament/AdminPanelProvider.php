@@ -46,7 +46,9 @@ class AdminPanelProvider extends PanelProvider
             ->defaultThemeMode(ThemeMode::Dark)
             ->renderHook(
                 'panels::head.end',
-                fn (): string => '<link rel="stylesheet" href="' . asset('css/filament-custom.css?v=8.6.0') . '">'
+                fn (): string => (request()->is('*/login') || request()->is('login'))
+                    ? ''
+                    : '<link rel="stylesheet" href="' . asset('css/filament-custom.css?v=8.6.0') . '">'
             )
             ->navigationGroups([
                 'سەرەکی',
