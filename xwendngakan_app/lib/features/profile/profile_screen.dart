@@ -114,6 +114,7 @@ class ProfileScreen extends StatelessWidget {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
+      useRootNavigator: true,
       builder: (_) => _LanguageSheet(locale: locale, l: l),
     );
   }

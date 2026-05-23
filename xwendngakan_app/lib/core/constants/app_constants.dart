@@ -28,7 +28,7 @@ class AppConstants {
     'ku': {'name': 'کوردی (سۆرانی)', 'flag': '❤️☀️💚', 'dir': 'rtl'},
     'kbd': {'name': 'کوردی (بادینی)', 'flag': '❤️☀️💚', 'dir': 'rtl'},
     'ar': {'name': 'العربية', 'flag': '🇮🇶', 'dir': 'rtl'},
-    'en': {'name': 'English', 'flag': '🇬🇧', 'dir': 'ltr'},
+    'en': {'name': 'ئینگلیزی', 'flag': '🇬🇧', 'dir': 'ltr'},
   };
 
   // === ANIMATION DURATIONS ===

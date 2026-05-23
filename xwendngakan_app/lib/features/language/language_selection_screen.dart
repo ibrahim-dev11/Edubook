@@ -53,7 +53,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
       flagType: _FlagType.emoji,
       flag: '🇬🇧',
       iconColor: Color(0xFF3B82F6),
-      isRTL: true,
+      isRTL: false,
     ),
   ];
 
