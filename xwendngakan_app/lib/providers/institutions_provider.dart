@@ -23,6 +23,8 @@ class InstitutionsProvider extends ChangeNotifier {
   List<Map<String, dynamic>> _banners = [];
   Map<String, dynamic> _stats = {};
   List<InstitutionTypeModel> _institutionTypes = [];
+  List<Map<String, dynamic>> _cities = [];
+  List<Map<String, dynamic>> _countries = [];
 
   List<InstitutionModel> get institutions => _institutions;
   List<InstitutionModel> get featured => _featured;
@@ -37,6 +39,8 @@ class InstitutionsProvider extends ChangeNotifier {
   List<Map<String, dynamic>> get banners => _banners;
   Map<String, dynamic> get stats => _stats;
   List<InstitutionTypeModel> get institutionTypes => _institutionTypes;
+  List<Map<String, dynamic>> get cities => _cities;
+  List<Map<String, dynamic>> get countries => _countries;
 
   List<InstitutionModel> get favoriteInstitutions =>
       _institutions.where((i) => _favorites.contains(i.id)).toList();
@@ -110,10 +114,16 @@ class InstitutionsProvider extends ChangeNotifier {
     if (result.success && result.data != null) {
       final List typesJson = result.data!['types'] ?? [];
       _institutionTypes = typesJson.map((e) => InstitutionTypeModel.fromJson(e)).toList();
-      
+
       final List bannersJson = result.data!['banners'] ?? [];
       _banners = bannersJson.map((e) => Map<String, dynamic>.from(e)).toList();
-      
+
+      final List citiesJson = result.data!['cities'] ?? [];
+      _cities = citiesJson.map((e) => Map<String, dynamic>.from(e)).toList();
+
+      final List countriesJson = result.data!['countries'] ?? [];
+      _countries = countriesJson.map((e) => Map<String, dynamic>.from(e)).toList();
+
       notifyListeners();
     }
   }

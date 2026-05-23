@@ -137,6 +137,10 @@ class AppLocalizations {
   String get allTypes => _t({'ku': 'هەموو جۆرەکان', 'kbd': 'هەمی جۆر', 'ar': 'جميع الأنواع', 'en': 'All Types', 'tr': 'Tüm Türler'});
   String get allCities => _t({'ku': 'هەموو شارەکان', 'kbd': 'هەمی باژێر', 'ar': 'جميع المدن', 'en': 'All Cities', 'tr': 'Tüm Şehirler'});
   String get report => _t({'ku': 'ڕاپۆرت', 'kbd': 'راپۆرت', 'ar': 'إبلاغ', 'en': 'Report', 'tr': 'Şikayet Et'});
+  String get addInstitution => _t({'ku': 'زیادکردنی دامەزراوە', 'kbd': 'زیادکردنی دەزگەهـ', 'ar': 'إضافة مؤسسة', 'en': 'Add Institution', 'tr': 'Kurum Ekle'});
+  String get editInstitution => _t({'ku': 'دەستکاریکردنی دامەزراوە', 'kbd': 'دەستکارکرنا دەزگەهـ', 'ar': 'تعديل المؤسسة', 'en': 'Edit Institution', 'tr': 'Kurumu Düzenle'});
+  String get myInstitution => _t({'ku': 'دامەزراوەکەم', 'kbd': 'دەزگەها من', 'ar': 'مؤسستي', 'en': 'My Institution', 'tr': 'Kurumum'});
+  String get pendingApproval => _t({'ku': 'چاوەڕوانی پاساوکردن', 'kbd': 'ل چاڤەڕوانیا پاساودانێ', 'ar': 'بانتظار الموافقة', 'en': 'Pending Approval', 'tr': 'Onay Bekliyor'});
 
   // TEACHERS
   // =====================

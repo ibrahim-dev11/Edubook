@@ -298,6 +298,109 @@ class ApiService {
     }
   }
 
+  Future<ApiResult<InstitutionModel?>> getMyInstitution() async {
+    try {
+      final headers = await _authHeaders();
+      final res = await http.get(
+        Uri.parse('$_base/my-institution'),
+        headers: headers,
+      ).timeout(AppConstants.receiveTimeout);
+
+      final data = jsonDecode(res.body) as Map<String, dynamic>;
+      if (res.statusCode == 200 && data['success'] == true) {
+        final inst = data['data'];
+        return ApiResult.success(inst != null ? InstitutionModel.fromJson(inst) : null);
+      }
+      return ApiResult.failure(data['message'] ?? 'Failed');
+    } catch (e) {
+      return ApiResult.failure('$e');
+    }
+  }
+
+  Future<ApiResult<InstitutionModel>> storeInstitution(
+    Map<String, dynamic> form, {
+    String? logoPath,
+    String? imgPath,
+  }) async {
+    try {
+      final authHeaders = await _authHeaders();
+      final Map<String, String> multipartHeaders = Map.from(authHeaders);
+      multipartHeaders.remove('Content-Type');
+
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$_base/institutions'),
+      );
+      request.headers.addAll(multipartHeaders);
+
+      form.forEach((key, value) {
+        if (value != null) request.fields[key] = value.toString();
+      });
+
+      if (logoPath != null && logoPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('logo', logoPath));
+      }
+      if (imgPath != null && imgPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('img', imgPath));
+      }
+
+      final streamed = await request.send().timeout(AppConstants.receiveTimeout);
+      final body = await streamed.stream.bytesToString();
+      final data = jsonDecode(body) as Map<String, dynamic>;
+
+      if ((streamed.statusCode == 200 || streamed.statusCode == 201) &&
+          data['success'] == true) {
+        return ApiResult.success(InstitutionModel.fromJson(data['data']));
+      }
+      return ApiResult.failure(data['message'] ?? 'Failed');
+    } catch (e) {
+      return ApiResult.failure('$e');
+    }
+  }
+
+  Future<ApiResult<InstitutionModel>> updateInstitution(
+    int id,
+    Map<String, dynamic> form, {
+    String? logoPath,
+    String? imgPath,
+  }) async {
+    try {
+      final authHeaders = await _authHeaders();
+      final Map<String, String> multipartHeaders = Map.from(authHeaders);
+      multipartHeaders.remove('Content-Type');
+
+      // Laravel doesn't support multipart PUT - use POST with _method override
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse('$_base/institutions/$id'),
+      );
+      request.headers.addAll(multipartHeaders);
+      request.fields['_method'] = 'PUT';
+
+      form.forEach((key, value) {
+        if (value != null) request.fields[key] = value.toString();
+      });
+
+      if (logoPath != null && logoPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('logo', logoPath));
+      }
+      if (imgPath != null && imgPath.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath('img', imgPath));
+      }
+
+      final streamed = await request.send().timeout(AppConstants.receiveTimeout);
+      final body = await streamed.stream.bytesToString();
+      final data = jsonDecode(body) as Map<String, dynamic>;
+
+      if (data['success'] == true) {
+        return ApiResult.success(InstitutionModel.fromJson(data['data']));
+      }
+      return ApiResult.failure(data['message'] ?? 'Failed');
+    } catch (e) {
+      return ApiResult.failure('$e');
+    }
+  }
+
   Future<ApiResult<Map<String, dynamic>>> getStats() async {
     try {
       final res = await http.get(
