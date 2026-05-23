@@ -68,13 +68,7 @@ class UserResource extends Resource
                             ->required(fn (string $operation): bool => $operation === 'create')
                             ->markAsRequired(false)
                             ->maxLength(255),
-                        Forms\Components\Toggle::make('is_approved')
-                            ->label('چالاککردنی هەژمار')
-                            ->default(false)
-                            ->onIcon('heroicon-m-check-badge')
-                            ->offIcon('heroicon-m-x-circle')
-                            ->onColor('success')
-                            ->offColor('danger'),
+
                     ])->columns(2),
             ]);
     }
