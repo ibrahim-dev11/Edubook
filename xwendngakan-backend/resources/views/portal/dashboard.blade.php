@@ -805,6 +805,10 @@
         <div id="academic-section" class="db-card {{ $isPublic ? 'hide-fees' : '' }}" style="{{ $showSection ? '' : 'display:none' }}">
           <div class="db-card-head">
             <div class="db-card-title">📚 <span id="academic-title">{{ $showColleges ? 'کۆلێژ و بەشەکان' : 'بەشەکان و پارەدان' }}</span></div>
+            <button type="button" class="btn-tr" onclick="translateDeptNames(this)">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+              وەرگێڕان
+            </button>
           </div>
 
           {{-- Mode 1: Colleges → nested depts + fee/discount per dept --}}
@@ -955,10 +959,6 @@
             <div class="f-group">
               <label class="f-label">Instagram</label>
               <input type="url" name="ig" class="f-input" placeholder="https://instagram.com/..." value="{{ old('ig', $institution?->ig) }}">
-            </div>
-            <div class="f-group">
-              <label class="f-label">WhatsApp</label>
-              <input type="text" name="wa" class="f-input" placeholder="https://wa.me/..." value="{{ old('wa', $institution?->wa) }}">
             </div>
             <div class="f-group">
               <label class="f-label">YouTube</label>
@@ -1159,6 +1159,42 @@ function previewImg(input, previewId) {
         if (img) { img.src = e.target.result; img.style.display = 'block'; }
     };
     reader.readAsDataURL(file);
+}
+async function translateDeptNames(btn) {
+    const section = document.getElementById('academic-section');
+    const isCollege = document.getElementById('group-colleges').style.display !== 'none';
+    let inputs = [];
+    if (isCollege) {
+        section.querySelectorAll('.college-card .clg-name').forEach(i => inputs.push(i));
+        section.querySelectorAll('.college-card .dept-row .f-input:first-child').forEach(i => inputs.push(i));
+    } else {
+        section.querySelectorAll('#depts-list .fee-row .f-input:first-child').forEach(i => inputs.push(i));
+    }
+    inputs = inputs.filter(i => i.value.trim());
+    if (!inputs.length) { alert('تکایە سەرەتا ناوی بەشەکان بنووسە.'); return; }
+    btn.classList.add('loading'); btn.disabled = true;
+    try {
+        for (const inp of inputs) {
+            const text = inp.value.trim();
+            if (!text) continue;
+            let hint = inp.nextElementSibling;
+            if (!hint || !hint.classList.contains('tr-hint')) {
+                hint = document.createElement('small');
+                hint.className = 'tr-hint';
+                hint.style.cssText = 'display:block;font-size:.68rem;color:var(--txt3);margin-top:3px;direction:rtl;line-height:1.7';
+                inp.after(hint);
+            }
+            hint.textContent = '⏳ وەرگێران...';
+            const [arRes, enRes] = await Promise.all([
+                fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ckb&tl=ar&dt=t&q=${encodeURIComponent(text)}`).then(r => r.json()),
+                fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=ckb&tl=en&dt=t&q=${encodeURIComponent(text)}`).then(r => r.json()),
+            ]);
+            const ar = arRes?.[0]?.map(p => p[0] ?? '').join('') ?? '';
+            const en = enRes?.[0]?.map(p => p[0] ?? '').join('') ?? '';
+            hint.innerHTML = `<span style="color:var(--gold);font-weight:800">AR</span> ${ar}&nbsp;&nbsp;<span style="color:var(--gold);font-weight:800">EN</span> ${en}`;
+        }
+    } catch { alert('هەڵەیەک ڕوویدا لە کاتی وەرگێڕان.'); }
+    finally { btn.classList.remove('loading'); btn.disabled = false; }
 }
 async function autoTranslate(sourceId, targetIds, btn) {
     const text = document.getElementById(sourceId).value;

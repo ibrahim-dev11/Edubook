@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\Institution;
 use App\Models\User;
 use App\Services\FirebaseNotificationService;
 use Filament\Forms;
@@ -143,10 +144,29 @@ class UserResource extends Resource
                     ->icon(fn (User $record) => $record->is_approved ? 'heroicon-m-x-circle' : 'heroicon-m-check-badge')
                     ->color(fn (User $record) => $record->is_approved ? 'danger' : 'success')
                     ->button()
-                    ->requiresConfirmation()
+                    ->requiresConfirmation(fn (User $record) => $record->is_approved)
                     ->visible(fn (User $record) => $record->user_type === 'portal' || $record->user_type === null)
-                    ->action(function (User $record) {
+                    ->form(fn (User $record) => $record->is_approved ? [] : [
+                        Forms\Components\Select::make('institution_id')
+                            ->label('دامەزراوەی پەیوەندیدار')
+                            ->options(
+                                Institution::orderBy('nku')
+                                    ->get()
+                                    ->mapWithKeys(fn (Institution $i) => [$i->id => $i->nku ?: $i->nen ?: "#{$i->id}"])
+                            )
+                            ->searchable()
+                            ->placeholder('هیچ دامەزراوەیەک نەگەڕێنەوە...')
+                            ->nullable(),
+                    ])
+                    ->action(function (User $record, array $data) {
                         $record->update(['is_approved' => !$record->is_approved]);
+
+                        // If activating and an institution was selected, link it to this user
+                        if ($record->is_approved && !empty($data['institution_id'])) {
+                            Institution::where('id', $data['institution_id'])
+                                ->update(['user_id' => $record->id]);
+                        }
+
                         \Filament\Notifications\Notification::make()
                             ->title($record->is_approved ? 'هەژمار چالاککرا' : 'هەژمار ناچالاککرا')
                             ->success()
