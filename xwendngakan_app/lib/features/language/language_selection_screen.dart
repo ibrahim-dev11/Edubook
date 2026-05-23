@@ -48,7 +48,7 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     ),
     _LangOption(
       code: 'en',
-      name: 'ئینگلیزی',
+      name: 'English',
       subtitle: 'English',
       flagType: _FlagType.emoji,
       flag: '🇬🇧',
@@ -176,6 +176,8 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
                   final isSelected = _selectedLang == lang.code;
                   return _LangTile(
                     lang: lang,
+                    displayName: widget.fromSettings ? l.localizedLangName(lang.code) : null,
+                    isRTLDisplay: widget.fromSettings ? l.isRTL : null,
                     isSelected: isSelected,
                     isDark: isDark,
                     onTap: () => setState(() => _selectedLang = lang.code),
@@ -293,12 +295,16 @@ class _KurdistanFlag extends StatelessWidget {
 
 class _LangTile extends StatelessWidget {
   final _LangOption lang;
+  final String? displayName;
+  final bool? isRTLDisplay;
   final bool isSelected;
   final bool isDark;
   final VoidCallback onTap;
 
   const _LangTile({
     required this.lang,
+    this.displayName,
+    this.isRTLDisplay,
     required this.isSelected,
     required this.isDark,
     required this.onTap,
@@ -347,8 +353,8 @@ class _LangTile extends StatelessWidget {
               // Text
               Expanded(
                 child: Text(
-                  lang.name,
-                  textDirection: lang.isRTL ? TextDirection.rtl : TextDirection.ltr,
+                  displayName ?? lang.name,
+                  textDirection: (isRTLDisplay ?? lang.isRTL) ? TextDirection.rtl : TextDirection.ltr,
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
