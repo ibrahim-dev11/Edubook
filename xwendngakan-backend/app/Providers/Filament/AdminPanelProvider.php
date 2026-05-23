@@ -48,23 +48,6 @@ class AdminPanelProvider extends PanelProvider
                 'panels::head.end',
                 fn (): string => '<style>
                     html, body { direction: rtl !important; }
-                    /* ڕێکخستنی سایدبار و دوگمەی داخستن بە تەواوی بۆ لای ڕاست لەسەر مۆبایل */
-                    @media (max-width: 1024px) {
-                        .fi-sidebar {
-                            right: 0 !important;
-                            left: auto !important;
-                        }
-                        /* گواستنەوەی دوگمەی داخستن (X) بۆ شوێنی گونجاو لە لای چەپی سایدباری دەستە ڕاست */
-                        .fi-sidebar-close-btn {
-                            margin-inline-start: auto !important;
-                            margin-inline-end: 0 !important;
-                        }
-                        /* بۆ ئەوەی کاتێک پەڕە بەتاڵەکە بە دیار نەکەوێت یان دوگمەکە لێت نەبرێت */
-                        .fi-sidebar-open .fi-sidebar {
-                            right: 0 !important;
-                            left: auto !important;
-                        }
-                    }
                 </style>'
             )
             ->navigationGroups([
