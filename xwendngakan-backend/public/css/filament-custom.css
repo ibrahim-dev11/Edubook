@@ -19,8 +19,11 @@ html, body {
     max-width: 100% !important;
     min-height: 100vh !important;
 }
-/* overflow-x:hidden لەسەر body لابراوە — لەگەڵ direction:rtl لەسەر html دەتوانێت
-   لەسەر Android Chrome ناوەڕۆکی لاپەڕە بیبەزێنێت و ببوێرێت */
+/* overflow-x:hidden لەسەر body نییە بۆ Android Chrome — بەڵام لەسەر .fi-layout دانراوە
+   تا بلانکی لاتەرەوەی مۆبایل (RTL overflow) چارەسەر بکات بەبێ کێشەی Android Chrome */
+.fi-layout {
+    overflow-x: hidden !important;
+}
 
 /* داخستنی سایدبار */
 .fi-sidebar,
@@ -110,8 +113,12 @@ aside.fi-sidebar,
 /* ریسپۆنسیڤ — مۆبایل */
 @media (max-width: 767px) {
     .fi-topbar-nav {
-        flex-wrap: wrap !important;
+        flex-wrap: nowrap !important;       /* پێشگیری لە قوڵبوونی تۆپبار */
         overflow-x: auto !important;
+        scrollbar-width: none !important;  /* Firefox */
+    }
+    .fi-topbar-nav::-webkit-scrollbar {
+        display: none !important;           /* Chrome/Safari */
     }
     .fi-ta-ctn {
         overflow-x: auto !important;
