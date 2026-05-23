@@ -31,9 +31,10 @@ class AppServiceProvider extends ServiceProvider
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
 
-        // جیاکردنەوەی کوکی سێشن بۆ ئەدمین و پۆرتال
+        // جیاکردنەوەی کوکی سێشن بۆ ئەدمین و پۆرتال + دیاریکردنی زمانی کوردی بۆ ئەدمین
         if (request()->is('admin*') || (request()->is('livewire*') && str_contains(request()->header('referer', ''), '/admin'))) {
             config(['session.cookie' => env('ADMIN_SESSION_COOKIE', 'edubook_admin_session')]);
+            app()->setLocale('ku');
         }
     }
 

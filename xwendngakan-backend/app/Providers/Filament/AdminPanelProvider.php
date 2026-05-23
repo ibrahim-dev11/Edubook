@@ -44,12 +44,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->font('Noto Kufi Arabic')
             ->defaultThemeMode(ThemeMode::Dark)
-            ->renderHook(
-                'panels::head.end',
-                fn (): string => '<style>
-                    html, body { direction: rtl !important; }
-                </style>'
-            )
             ->navigationGroups([
                 'سەرەکی',
                 'دامەزراوەکان',
