@@ -48,6 +48,7 @@ aside.fi-sidebar,
 }
 
 /* لەیاوتی لۆگین (simple layout) — مەرج نەکرێت لەگەڵ ئەوی سەرەوە */
+/* overflow-x:hidden زیادکراوە بۆ چارەسەری هەمان کێشەی RTL overflow لە مۆبایل — وەک .fi-layout */
 .fi-simple-layout {
     min-height: 100vh !important;
     display: flex !important;
@@ -55,6 +56,7 @@ aside.fi-sidebar,
     align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
+    overflow-x: hidden !important;
     padding: 1.5rem !important;
     box-sizing: border-box !important;
 }
