@@ -15,95 +15,18 @@ body, .fi-body {
 
 /* ══ لەیاوت و سایز ══ */
 html, body {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: 100vh !important;
-}
-/* overflow-x:hidden لەسەر body نییە بۆ Android Chrome — بەڵام لەسەر .fi-layout دانراوە
-   تا بلانکی لاتەرەوەی مۆبایل (RTL overflow) چارەسەر بکات بەبێ کێشەی Android Chrome */
-.fi-layout {
     overflow-x: hidden !important;
 }
 
-/* داخستنی سایدبار */
-.fi-sidebar,
-aside.fi-sidebar,
-[class*="fi-sidebar"] {
-    display: none !important;
-    width: 0 !important;
-    max-width: 0 !important;
-    min-width: 0 !important;
-    overflow: hidden !important;
-    flex: 0 0 0 !important;
-}
-
-/* ناوەرۆک تەواو پان */
-.fi-layout,
-.fi-body {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-/* لەیاوتی لۆگین (simple layout) — مەرج نەکرێت لەگەڵ ئەوی سەرەوە */
-/* overflow-x:hidden زیادکراوە بۆ چارەسەری هەمان کێشەی RTL overflow لە مۆبایل — وەک .fi-layout */
-.fi-simple-layout {
-    min-height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 100% !important;
-    overflow-x: hidden !important;
-    padding: 1.5rem !important;
-    box-sizing: border-box !important;
-}
+/* ڕەنگی تاریکی پەیجی لۆگین */
 .dark .fi-simple-layout {
     background-color: #090d16 !important;
-}
-.fi-simple-main {
-    width: 100% !important;
-    max-width: 28rem !important;
 }
 .dark .fi-simple-page > * {
     background-color: #0f1624 !important;
     border: 1px solid rgba(196,154,60,.18) !important;
     border-radius: 16px !important;
     box-shadow: 0 8px 32px rgba(0,0,0,.5) !important;
-}
-
-.fi-main-ctn {
-    flex: 1 1 auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline-start: 0 !important;
-    padding-inline-start: 0 !important;
-}
-
-.fi-main {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    margin-inline-start: 0 !important;
-    padding-inline-start: 0 !important;
-    flex: 1 1 auto !important;
-}
-
-/* پێشگیری لە margin/padding زیادەی Filament */
-.fi-layout-sidebar-open .fi-main,
-.fi-layout-sidebar-open .fi-main-ctn {
-    margin-inline-start: 0 !important;
-    padding-inline-start: 0 !important;
-}
-
-/* ناوەرۆکی ناوەندی */
-.fi-page,
-.fi-page-content {
-    width: 100% !important;
-    max-width: 100% !important;
 }
 
 /* گرید و ویجێتەکان */
