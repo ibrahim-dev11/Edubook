@@ -156,6 +156,8 @@ Route::prefix('portal')->name('portal.')->group(function () {
                 'wa'       => 'nullable|string|max:50',
                 'tk'       => 'nullable|string|max:255',
                 'yt'       => 'nullable|string|max:255',
+                'founded_year'     => 'nullable|integer',
+                'students_count'   => 'nullable|integer',
                 'img'      => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
                 'logo'     => 'nullable|file|extensions:jpg,jpeg,png,gif,webp|max:10240',
             ]);

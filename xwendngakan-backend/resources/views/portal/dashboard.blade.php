@@ -961,8 +961,11 @@
               <input type="url" name="ig" class="f-input" placeholder="https://instagram.com/..." value="{{ old('ig', $institution?->ig) }}">
             </div>
             <div class="f-group">
-              <label class="f-label">YouTube</label>
-              <input type="url" name="yt" class="f-input" placeholder="https://youtube.com/..." value="{{ old('yt', $institution?->yt) }}">
+              <label class="f-label">سەرژمێری و ساڵ</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="number" name="founded_year" class="f-input" placeholder="ساڵی دامەزراندن (بۆ نموونە: 2015)" value="{{ old('founded_year', $institution?->founded_year) }}">
+                <input type="number" name="students_count" class="f-input" placeholder="کۆی قوتابیان (بۆ نموونە: 1200)" value="{{ old('students_count', $institution?->students_count) }}">
+              </div>
             </div>
           </div>
         </div>
@@ -970,11 +973,11 @@
         {{-- ڤیدیۆ --}}
         <div class="db-card">
           <div class="db-card-head">
-            <div class="db-card-title">🎥 ڤیدیۆی ناساندن (YouTube)</div>
+            <div class="db-card-title">🎥 بەستەری ناساندن</div>
           </div>
           <div class="f-group">
-            <label class="f-label">بەستەری ڤیدیۆ لە YouTube</label>
-            <input type="url" name="video" class="f-input" placeholder="https://www.youtube.com/watch?v=..." value="{{ old('video', $institution?->video) }}">
+            <label class="f-label">بەستەر یان لینکی ناساندن</label>
+            <input type="url" name="video" class="f-input" placeholder="https://..." value="{{ old('video', $institution?->video) }}">
           </div>
         </div>
 
