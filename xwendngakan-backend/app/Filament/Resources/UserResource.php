@@ -101,7 +101,7 @@ class UserResource extends Resource
                     ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('بەرواری تۆمارکردن')
-                    ->dateTime('Y/m/d H:i')\\\\\\
+                    ->dateTime('Y/m/d H:i')
                     ->sortable()
                     ->icon('heroicon-o-calendar'),
             ])
