@@ -29,6 +29,7 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'is_admin',
         'is_approved',
+        'user_type',
         'fcm_token',
         'notifications_enabled',
     ];
@@ -57,6 +58,7 @@ class User extends Authenticatable implements FilamentUser
             'is_admin' => 'boolean',
             'is_approved' => 'boolean',
             'notifications_enabled' => 'boolean',
+            'user_type' => 'string',
         ];
     }
 

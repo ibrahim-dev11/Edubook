@@ -211,19 +211,6 @@ class ApiService {
             .map((e) => InstitutionModel.fromJson(e))
             .toList();
         
-        // Add mock for preview
-        if (page == 1 && (search == null || search.isEmpty)) {
-          list.insert(0, InstitutionModel(
-            id: 999,
-            nku: "ئەکادیمیای پایتەخت (Mock)",
-            nen: "Capital Academy (Mock)",
-            type: "university",
-            city: "Hewlêr",
-            logo: "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?q=80&w=200&h=200&auto=format&fit=crop",
-            approved: true,
-          ));
-        }
-        
         return ApiResult.success(list);
       }
       return ApiResult.failure(data['message'] ?? 'Failed');

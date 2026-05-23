@@ -140,7 +140,7 @@ class _InstitutionsScreenState extends State<InstitutionsScreen> {
                 child: prov.loading && prov.institutions.isEmpty
                     ? _buildShimmer()
                     : prov.institutions.isEmpty
-                        ? EmptyState(icon: Icons.school_outlined, message: l.noResults)
+                        ? EmptyState(icon: Icons.school_outlined, message: l.noInstitutionsFound)
                         : GridView.builder(
                             controller: _scrollCtrl,
                             padding: const EdgeInsets.fromLTRB(20, 4, 20, 80),

@@ -32,12 +32,12 @@ class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) static::getModel()::where('is_approved', false)->where('is_admin', false)->count();
+        return (string) static::getModel()::where('is_approved', false)->where('is_admin', false)->where('user_type', 'portal')->count();
     }
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::getModel()::where('is_approved', false)->where('is_admin', false)->count() > 0 ? 'warning' : 'info';
+        return static::getModel()::where('is_approved', false)->where('is_admin', false)->where('user_type', 'portal')->count() > 0 ? 'warning' : 'info';
     }
 
     public static function form(Form $form): Form
@@ -94,6 +94,25 @@ class UserResource extends Resource
                     ->sortable()
                     ->copyable()
                     ->icon('heroicon-o-envelope'),
+                Tables\Columns\TextColumn::make('user_type')
+                    ->label('جۆری هەژمار')
+                    ->badge()
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'portal'  => 'دامەزراوە',
+                        'mobile'  => 'مۆبایل ئەپ',
+                        default   => 'مۆبایل ئەپ',
+                    })
+                    ->color(fn (?string $state): string => match ($state) {
+                        'portal'  => 'warning',
+                        'mobile'  => 'info',
+                        default   => 'info',
+                    })
+                    ->icon(fn (?string $state): string => match ($state) {
+                        'portal'  => 'heroicon-o-building-office',
+                        'mobile'  => 'heroicon-o-device-phone-mobile',
+                        default   => 'heroicon-o-device-phone-mobile',
+                    })
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_approved')
                     ->label('پەسەندکراوە')
                     ->boolean()
@@ -106,7 +125,18 @@ class UserResource extends Resource
                     ->icon('heroicon-o-calendar'),
             ])
             ->defaultSort('created_at', 'desc')
-            ->filters([])
+            ->filters([
+                Tables\Filters\SelectFilter::make('user_type')
+                    ->label('جۆری هەژمار')
+                    ->options([
+                        'mobile' => 'مۆبایل ئەپ',
+                        'portal' => 'دامەزراوە',
+                    ]),
+                Tables\Filters\TernaryFilter::make('is_approved')
+                    ->label('پەسەندکراوە')
+                    ->trueLabel('چالاک')
+                    ->falseLabel('چالاک نەکراو'),
+            ])
             ->actions([
                 Tables\Actions\Action::make('toggleApproval')
                     ->label(fn (User $record) => $record->is_approved ? 'ناچالاککردن' : 'چالاککردن')
@@ -114,6 +144,7 @@ class UserResource extends Resource
                     ->color(fn (User $record) => $record->is_approved ? 'danger' : 'success')
                     ->button()
                     ->requiresConfirmation()
+                    ->visible(fn (User $record) => $record->user_type === 'portal' || $record->user_type === null)
                     ->action(function (User $record) {
                         $record->update(['is_approved' => !$record->is_approved]);
                         \Filament\Notifications\Notification::make()

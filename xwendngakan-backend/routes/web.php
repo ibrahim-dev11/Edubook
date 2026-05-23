@@ -73,6 +73,7 @@ Route::prefix('portal')->name('portal.')->group(function () {
             'email'       => $data['email'],
             'password'    => Hash::make($data['password']),
             'is_approved' => false,
+            'user_type'   => 'portal',
         ]);
         Auth::login($user);
         return redirect()->route('portal.waiting');
