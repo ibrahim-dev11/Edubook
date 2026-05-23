@@ -58,7 +58,6 @@ class _CvScreenState extends State<CvScreen> with SingleTickerProviderStateMixin
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
-      floatingActionButton: _buildPremiumFAB(context, l, isDark),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: RefreshIndicator(
@@ -368,40 +367,6 @@ class _CvScreenState extends State<CvScreen> with SingleTickerProviderStateMixin
             isDark: isDark,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildPremiumFAB(BuildContext context, AppLocalizations l, bool isDark) {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        gradient: AppColors.primaryGradient,
-        borderRadius: BorderRadius.circular(22),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.4),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: FloatingActionButton.extended(
-        onPressed: () => context.push('/cv-form'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        highlightElevation: 0,
-        label: Text(
-          l.createCv,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w900,
-            fontFamily: 'Rabar',
-            fontSize: 14,
-            letterSpacing: 0.5,
-          ),
-        ),
-        icon: const Icon(Icons.add_rounded, color: Colors.white, size: 24),
       ),
     );
   }
