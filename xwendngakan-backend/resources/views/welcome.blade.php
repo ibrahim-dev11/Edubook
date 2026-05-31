@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -20,8 +20,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        arabic: ['"Noto Kufi Arabic"', 'sans-serif'],
-                        sans: ['"Plus Jakarta Sans"', '"Noto Kufi Arabic"', 'sans-serif'],
+                        arabic: ['"Vazirmatn"', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', '"Vazirmatn"', 'sans-serif'],
                     },
                     colors: {
                         brand: {
@@ -62,7 +62,7 @@
 
     <style>
         body {
-            font-family: 'Noto Kufi Arabic', 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Vazirmatn', 'Plus Jakarta Sans', sans-serif;
             background-color: #fcfcfd;
             overflow-x: hidden;
             scroll-behavior: smooth;

@@ -42,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Amber,
             ])
-            ->font('Noto Kufi Arabic')
+            ->font('Vazirmatn')
             ->defaultThemeMode(ThemeMode::Dark)
             ->navigationGroups([
                 'سەرەکی',

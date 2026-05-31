@@ -6,23 +6,23 @@
    TOKENS
 ════════════════════════════════════════════════ */
 :root {
-  --gold:    #c49a3c;
-  --gold-lt: #e0b856;
-  --gold-dk: #8a6520;
-  --bg:      #090d16;
-  --bg2:     #0f1624;
-  --bg3:     #16203a;
-  --bg4:     #1e2d48;
-  --border:  rgba(196,154,60,.13);
-  --border2: rgba(196,154,60,.30);
-  --txt:     #eef1f8;
-  --txt2:    #8da4c0;
-  --txt3:    #4e6585;
-  --red:     #ff4545;
-  --green:   #22c55e;
-  --grad:    linear-gradient(135deg, #7a5a1a, #c49a3c);
-  --radius:  14px;
-  --radius-sm: 9px;
+  --gold:    #e2b042;
+  --gold-lt: #fbbf24;
+  --gold-dk: #b88728;
+  --bg:      #080c14;
+  --bg2:     #0f172a;
+  --bg3:     #1e293b;
+  --bg4:     #334155;
+  --border:  rgba(226, 176, 66, 0.12);
+  --border2: rgba(226, 176, 66, 0.28);
+  --txt:     #f8fafc;
+  --txt2:    #94a3b8;
+  --txt3:    #64748b;
+  --red:     #ef4444;
+  --green:   #10b981;
+  --grad:    linear-gradient(135deg, #b88728, #fbbf24);
+  --radius:  16px;
+  --radius-sm: 10px;
 }
 
 /* ════════════════════════════════════════════════
@@ -66,9 +66,9 @@
   width: 40px; height: 40px;
   border-radius: 11px;
   background: var(--grad);
-  box-shadow: 0 4px 14px rgba(196,154,60,.35);
+  box-shadow: 0 4px 14px rgba(226, 176, 66, 0.35);
   display: flex; align-items: center; justify-content: center;
-  font-size: .95rem; font-weight: 900; color: #fff;
+  font-size: .95rem; font-weight: 900; color: #080c14;
   flex-shrink: 0;
 }
 .db-avatar-name  { font-size: .87rem; font-weight: 700; color: var(--txt); line-height: 1.3; }
@@ -86,10 +86,10 @@
   transition: all .15s;
   position: relative;
 }
-.db-nav-btn:hover { background: rgba(196,154,60,.07); color: var(--gold-lt); }
+.db-nav-btn:hover { background: rgba(226, 176, 66, 0.08); color: var(--gold-lt); }
 .db-nav-btn.is-active {
-  background: rgba(196,154,60,.11);
-  color: var(--gold);
+  background: rgba(226, 176, 66, 0.12);
+  color: var(--gold-lt);
 }
 .db-nav-btn.is-active::before {
   content: '';
@@ -100,8 +100,8 @@
 .db-nav-icon { font-size: 1rem; flex-shrink: 0; }
 .db-nav-badge {
   margin-right: auto;
-  background: rgba(183,137,54,.2);
-  color: var(--gold);
+  background: rgba(226, 176, 66, 0.18);
+  color: var(--gold-lt);
   font-size: .65rem; padding: 1px 7px;
   border-radius: 20px; font-weight: 800;
 }

@@ -1,17 +1,19 @@
 
 /* ══ فۆنت + ئاراستە ══
-   تێبینی: Noto Kufi Arabic لە لایەن Filament بارکراوە (->font()), @import پێویست نیە
+   Vazirmatn: فۆنتێکی مۆدێرن و گونجاو بۆ کوردی و عەرەبی
 ══ */
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+
 /* html تەنها فۆنت وەردەگرێت، direction:rtl دێنرێتە سەر body بۆ ئەوەی Android Chrome لێ نەشکێت */
 html {
-    font-family: 'Noto Kufi Arabic', sans-serif !important;
+    font-family: 'Vazirmatn', sans-serif !important;
 }
 body, .fi-body {
     direction: rtl !important;
     text-align: right !important;
-    font-family: 'Noto Kufi Arabic', sans-serif !important;
+    font-family: 'Vazirmatn', sans-serif !important;
 }
-* { font-family: 'Noto Kufi Arabic', sans-serif !important; }
+* { font-family: 'Vazirmatn', sans-serif !important; }
 
 /* ══ لەیاوت و سایز ══ */
 html, body {

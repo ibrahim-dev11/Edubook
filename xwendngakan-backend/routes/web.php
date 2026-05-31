@@ -72,11 +72,11 @@ Route::prefix('portal')->name('portal.')->group(function () {
             'name'        => $data['name'],
             'email'       => $data['email'],
             'password'    => Hash::make($data['password']),
-            'is_approved' => false,
+            'is_approved' => true,
             'user_type'   => 'portal',
         ]);
         Auth::login($user);
-        return redirect()->route('portal.waiting');
+        return redirect()->route('portal.dashboard');
     })->name('register.submit');
 
     Route::get('/waiting-approval', function () {
